@@ -40,6 +40,7 @@ src/agent/
   run.ts                # runAgent() wrapper over streamText + stopWhen
   tools/
     index.ts            # buildAgentTools(ctx) -> ToolSet
+    # P0 filesystem + search
     read_file.ts        # 2MB cap, UTF-8, rejects non-files
     write_file.ts       # mkdir -p parents, returns {path, bytes}
     edit_file.ts        # strict single-match find/replace; throws on 0 or >1 matches
@@ -48,6 +49,10 @@ src/agent/
     copy_file.ts
     list_files.ts       # DEFAULT_IGNORES excludes node_modules/.git/.next/dist/...
     grep.ts             # shells out to ripgrep with --json
+    # P1 build + network
+    run_type_checks.ts  # npx tsc --noEmit with timeout + output cap
+    add_dependency.ts   # auto-detects pnpm/yarn/npm; strict package-spec whitelist
+    web_fetch.ts        # http(s) only; SSRF-safe; 2MB cap; GET/HEAD
   compat/
     search_replace.ts           # drop-in parse/apply for the XML dialect, used by response_processor
     local_agent_stub.ts         # throws; points callers at runAgent()
@@ -70,6 +75,8 @@ Done:
 - [x] Delete `CLA.md`.
 - [x] Add `NOTICE` per Apache-2.0 §4(d) attributing Dyad Tech, Inc.
 - [x] Create `src/agent/` skeleton with the eight P0 tools and `runAgent`.
+- [x] Add first-wave P1 tools: `run_type_checks`, `add_dependency`,
+      `web_fetch`.
 - [x] Create `src/agent/compat/` shims for `parseSearchReplaceBlocks` /
       `applySearchReplace`, `handleLocalAgentStream`, and
       `resolveQuestionnaireResponse`.
@@ -90,10 +97,9 @@ Pending (tracked for follow-up):
 - [ ] Wire `runAgent` into `chat_stream_handlers.ts` for the `local-agent`
       chat mode. Today the stub throws at runtime; the UI currently offers
       the mode but it will error until this rewire lands.
-- [ ] Add the remaining P1 tools to `src/agent/tools/` (type-check,
-      add-dependency, execute-SQL, read-logs, web-fetch/search/crawl,
-      image generation). These are referenced in `AgentToolName` but not
-      yet implemented.
+- [ ] Add the remaining P1 tools to `src/agent/tools/` (execute-SQL,
+      read-logs, web-search, web-crawl, image generation). These are
+      referenced in `AgentToolName` but not yet implemented.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent
