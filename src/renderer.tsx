@@ -25,6 +25,7 @@ import { useSetAtom } from "jotai";
 import {
   pendingAgentConsentsAtom,
   agentTodosByChatIdAtom,
+  agentToolCallsByChatIdAtom,
 } from "./atoms/chatAtoms";
 import { pendingQuestionnaireAtom } from "./atoms/planAtoms";
 import { queryKeys } from "./lib/queryKeys";
@@ -250,6 +251,65 @@ function App() {
     );
     return () => unsubscribe();
   }, []);
+
+  // Agent tool-call timeline: populated by agent-tool:call-start / :call-end.
+  const setAgentToolCallsByChatId = useSetAtom(agentToolCallsByChatIdAtom);
+  useEffect(() => {
+    const unsubStart = ipc.events.agent.onToolCallStart((payload) => {
+      setAgentToolCallsByChatId((prev) => {
+        const next = new Map(prev);
+        const existing = next.get(payload.chatId) ?? [];
+        next.set(payload.chatId, [
+          ...existing,
+          {
+            toolCallId: payload.toolCallId,
+            toolName: payload.toolName,
+            status: "running",
+            inputPreview: payload.inputPreview,
+          },
+        ]);
+        return next;
+      });
+    });
+    const unsubEnd = ipc.events.agent.onToolCallEnd((payload) => {
+      setAgentToolCallsByChatId((prev) => {
+        const existing = prev.get(payload.chatId);
+        if (!existing) return prev;
+        const next = new Map(prev);
+        next.set(
+          payload.chatId,
+          existing.map((entry) =>
+            entry.toolCallId === payload.toolCallId
+              ? {
+                  ...entry,
+                  status: payload.ok ? "ok" : "error",
+                  outputPreview: payload.outputPreview ?? entry.outputPreview,
+                  error: payload.error ?? entry.error,
+                }
+              : entry,
+          ),
+        );
+        return next;
+      });
+    });
+    return () => {
+      unsubStart();
+      unsubEnd();
+    };
+  }, [setAgentToolCallsByChatId]);
+
+  // Clear tool-call timeline when a new stream starts.
+  useEffect(() => {
+    const unsubscribe = ipc.events.misc.onChatStreamStart(({ chatId }) => {
+      setAgentToolCallsByChatId((prev) => {
+        if (!prev.has(chatId)) return prev;
+        const next = new Map(prev);
+        next.delete(chatId);
+        return next;
+      });
+    });
+    return () => unsubscribe();
+  }, [setAgentToolCallsByChatId]);
 
   // Agent problems updates - update the TanStack Query cache when the agent runs type checks
   useEffect(() => {

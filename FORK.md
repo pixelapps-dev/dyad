@@ -102,6 +102,14 @@ Done:
       `local_agent_stream.ts`. Payloads include `toolCallId`,
       `toolName`, and JSON-truncated previews of the input / output or
       an error string.
+- [x] Wire the renderer to consume those events. `renderer.tsx`
+      subscribes to both channels and populates a new
+      `agentToolCallsByChatIdAtom` timeline (cleared on
+      `chat:stream:start`). `AgentToolCallTimeline` renders the
+      timeline inside `MessagesList` using the existing `DyadCard`
+      primitives — running / ok / error states each get a distinct
+      accent, and each card expands to show the input and output (or
+      error) previews.
 - [x] Rewire all nine production imports that used to point into
       `src/pro/`:
       - `src/ipc/ipc_host.ts` (three handler registrations deleted)
@@ -122,9 +130,6 @@ Pending (tracked for follow-up):
       `web_crawl` are green-field (no backing infra in the fork yet);
       `generate_image` would currently need to point at the upstream
       `engine.dyad.sh` host, so it's deferred until the rebrand lands.
-- [ ] Wire the renderer to consume the new `agent-tool:call-start` /
-      `agent-tool:call-end` events so the chat UI can render per-tool
-      invocation cards.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent

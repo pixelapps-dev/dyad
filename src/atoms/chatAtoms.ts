@@ -239,6 +239,26 @@ export const pendingAgentConsentsAtom = atom<PendingAgentConsent[]>([]);
 // Agent todos per chat
 export const agentTodosByChatIdAtom = atom<Map<number, AgentTodo[]>>(new Map());
 
+/**
+ * One entry in the timeline of tool calls the agent made during the current
+ * turn. `status === "running"` means we've seen `call-start` but not yet
+ * `call-end`; once the end event arrives the entry is flipped to `ok` or
+ * `error`.
+ */
+export interface AgentToolCallEntry {
+  toolCallId: string;
+  toolName: string;
+  status: "running" | "ok" | "error";
+  inputPreview?: string;
+  outputPreview?: string;
+  error?: string;
+}
+
+// Tool-call timeline per chat, populated by agent-tool:call-start / :call-end.
+export const agentToolCallsByChatIdAtom = atom<
+  Map<number, AgentToolCallEntry[]>
+>(new Map());
+
 // Flag: set when user switches to plan mode from another mode in a chat with messages
 export const needsFreshPlanChatAtom = atom<boolean>(false);
 

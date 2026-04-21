@@ -20,6 +20,7 @@ import { useLanguageModelProviders } from "@/hooks/useLanguageModelProviders";
 import { useSettings } from "@/hooks/useSettings";
 import { useUserBudgetInfo } from "@/hooks/useUserBudgetInfo";
 import { PromoMessage } from "./PromoMessage";
+import { AgentToolCallTimeline } from "./AgentToolCallTimeline";
 import { isCancelledResponseContent } from "@/shared/chatCancellation";
 
 interface MessagesListProps {
@@ -251,6 +252,7 @@ function FooterComponent({ context }: { context?: FooterContext }) {
           </div>
         </div>
       )}
+      <AgentToolCallTimeline />
       {isStreaming &&
         !settings?.enableDyadPro &&
         !userBudget &&
