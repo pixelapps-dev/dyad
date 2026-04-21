@@ -53,9 +53,11 @@ src/agent/
     run_type_checks.ts  # npx tsc --noEmit with timeout + output cap
     add_dependency.ts   # auto-detects pnpm/yarn/npm; strict package-spec whitelist
     web_fetch.ts        # http(s) only; SSRF-safe; 2MB cap; GET/HEAD
+  stream/
+    local_agent_stream.ts       # handleLocalAgentStream() over runAgent(); emits the legacy
+                                # chat:response:chunk / :end / :error IPC events
   compat/
     search_replace.ts           # drop-in parse/apply for the XML dialect, used by response_processor
-    local_agent_stub.ts         # throws; points callers at runAgent()
     questionnaire_stub.ts       # throws; points callers at the new agent
 ```
 
@@ -78,8 +80,12 @@ Done:
 - [x] Add first-wave P1 tools: `run_type_checks`, `add_dependency`,
       `web_fetch`.
 - [x] Create `src/agent/compat/` shims for `parseSearchReplaceBlocks` /
-      `applySearchReplace`, `handleLocalAgentStream`, and
-      `resolveQuestionnaireResponse`.
+      `applySearchReplace` and `resolveQuestionnaireResponse`.
+- [x] Wire `runAgent` into `chat_stream_handlers.ts` via a new
+      `src/agent/stream/local_agent_stream.ts` that emits the legacy
+      `chat:response:chunk` / `:end` / `:error` IPC events. Build mode gets
+      the full tool set; ask / plan mode gets a read-only subset
+      (`read_file`, `list_files`, `grep`, `run_type_checks`, `web_fetch`).
 - [x] Rewire all nine production imports that used to point into
       `src/pro/`:
       - `src/ipc/ipc_host.ts` (three handler registrations deleted)
@@ -94,12 +100,12 @@ Done:
 
 Pending (tracked for follow-up):
 
-- [ ] Wire `runAgent` into `chat_stream_handlers.ts` for the `local-agent`
-      chat mode. Today the stub throws at runtime; the UI currently offers
-      the mode but it will error until this rewire lands.
 - [ ] Add the remaining P1 tools to `src/agent/tools/` (execute-SQL,
       read-logs, web-search, web-crawl, image generation). These are
       referenced in `AgentToolName` but not yet implemented.
+- [ ] Stream structured tool-call events from
+      `src/agent/stream/local_agent_stream.ts` so the renderer can render
+      per-tool-call UI (today only text deltas are forwarded).
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent
