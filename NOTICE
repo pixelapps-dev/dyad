@@ -1,0 +1,23 @@
+This product is a fork of the "Dyad" project originally developed by
+Dyad Tech, Inc. (https://dyad.sh, https://github.com/dyad-sh/dyad).
+
+Portions of the source code in this repository are:
+
+    Copyright 2025 Dyad Tech, Inc.
+
+and are licensed under the Apache License, Version 2.0 (the "Apache
+License"). A copy of the Apache License is provided in the LICENSE file at
+the root of this repository.
+
+Modifications in this fork, including substantial removals of the
+Functional-Source-Licensed components originally distributed under
+src/pro/, are Copyright of the respective fork contributors and are also
+released under the Apache License, Version 2.0.
+
+The name "Dyad" and related logos are trademarks of Dyad Tech, Inc. Per
+section 6 of the Apache License, this product does not claim any trademark
+rights in those marks. If you distribute a derivative of this fork, you
+should choose a new product name and logo that are distinct from "Dyad".
+
+This file is provided to satisfy the attribution requirement of the Apache
+License, Version 2.0, section 4(d).

@@ -64,7 +64,8 @@ import { getProviderOptions, getAiHeaders } from "../utils/provider_options";
 import { mcpServers } from "../../db/schema";
 import { requireMcpToolConsent } from "../utils/mcp_consent";
 
-import { handleLocalAgentStream } from "../../pro/main/ipc/handlers/local_agent/local_agent_handler";
+// TODO(fork): migrate call sites below to `runAgent` from `src/agent/run.ts`.
+import { handleLocalAgentStream } from "../../agent/compat/local_agent_stub";
 
 import { safeSend } from "../utils/safe_sender";
 import { cleanFullResponse } from "../utils/cleanFullResponse";

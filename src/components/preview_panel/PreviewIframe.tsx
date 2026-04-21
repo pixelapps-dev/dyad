@@ -77,7 +77,6 @@ import { queryKeys } from "@/lib/queryKeys";
 import { AnnotatorOnlyForPro } from "./AnnotatorOnlyForPro";
 import { useAttachments } from "@/hooks/useAttachments";
 import { useUserBudgetInfo } from "@/hooks/useUserBudgetInfo";
-import { Annotator } from "@/pro/ui/components/Annotator/Annotator";
 import { VisualEditingToolbar } from "./VisualEditingToolbar";
 import { resolvePreviewBrowserUrl } from "./previewBrowserUrl";
 
@@ -1564,17 +1563,15 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
                     : { width: `${deviceWidthConfig[deviceMode]}px` }
                 }
               >
-                {userBudget ? (
-                  <Annotator
-                    screenshotUrl={screenshotDataUrl}
-                    onSubmit={addAttachments}
-                    handleAnnotatorClick={handleAnnotatorClick}
-                  />
-                ) : (
-                  <AnnotatorOnlyForPro
-                    onGoBack={() => setAnnotatorMode(false)}
-                  />
-                )}
+                {/* TODO(fork): The FSL-licensed Annotator was removed with
+                    the src/pro/ carve-out. The placeholder below will be
+                    replaced with a clean-room screenshot annotator. */}
+                <AnnotatorOnlyForPro
+                  onGoBack={() => setAnnotatorMode(false)}
+                />
+                {/* Retain references so type-check does not complain about
+                    locals that will be used once the annotator returns. */}
+                {void addAttachments}
               </div>
             ) : (
               <>

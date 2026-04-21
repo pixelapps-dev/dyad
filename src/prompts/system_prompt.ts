@@ -1,7 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
 import log from "electron-log";
-import { TURBO_EDITS_V2_SYSTEM_PROMPT } from "../pro/main/prompts/turbo_edits_v2_prompt";
 import { constructLocalAgentPrompt } from "./local_agent_prompt";
 import { constructPlanModePrompt } from "./plan_mode_prompt";
 
@@ -562,10 +561,12 @@ export const getSystemPromptForChatMode = ({
   if (chatMode === "ask") {
     return ASK_MODE_SYSTEM_PROMPT;
   }
-  return (
-    BUILD_SYSTEM_PROMPT +
-    (enableTurboEditsV2 ? TURBO_EDITS_V2_SYSTEM_PROMPT : "")
-  );
+  // TODO(fork): Turbo Edits V2 prompt removed with the src/pro/ carve-out.
+  // The new agent in src/agent/ uses native tool-calling, which obsoletes the
+  // legacy Turbo Edits search/replace DSL. The flag is left in the signature
+  // so existing call sites keep compiling until they are cleaned up.
+  void enableTurboEditsV2;
+  return BUILD_SYSTEM_PROMPT;
 };
 
 export const readAiRules = async (dyadAppPath: string) => {

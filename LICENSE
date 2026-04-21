@@ -1,7 +1,7 @@
-Portions of this software are licensed as follows:
-
-* All content that resides under the "src/pro/" directory of this repository, if that directory exists, is licensed under the license defined in "src/pro/LICENSE".
-* Content outside of the above mentioned directories or restrictions above is available under the Apache 2 license as defined below.
+This software is licensed under the Apache License, Version 2.0, as defined
+below. Portions of the original upstream project (dyad-sh/dyad) that were
+distributed under the Functional Source License (Dyad Pro) have been removed
+from this fork and are not included in this distribution.
 
                                  Apache License
                            Version 2.0, January 2004

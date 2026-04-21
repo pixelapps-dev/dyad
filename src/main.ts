@@ -40,7 +40,6 @@ import {
   stopAllAppsSync,
   stopAppGarbageCollection,
 } from "./ipc/utils/process_manager";
-import { cleanupOldAiMessagesJson } from "./pro/main/ipc/handlers/local_agent/ai_messages_cleanup";
 import { cleanupOldMediaFiles } from "./ipc/utils/media_cleanup";
 import fs from "fs";
 import { gitAddSafeDirectory } from "./ipc/utils/git_utils";
@@ -172,9 +171,6 @@ export async function onReady() {
     logger.error("Error initializing backup manager", e);
   }
   initializeDatabase();
-
-  // Cleanup old ai_messages_json entries to prevent database bloat
-  cleanupOldAiMessagesJson();
 
   // Cleanup old media files to reclaim disk space
   cleanupOldMediaFiles();

@@ -29,15 +29,15 @@ import { registerCapacitorHandlers } from "./handlers/capacitor_handlers";
 import { registerProblemsHandlers } from "./handlers/problems_handlers";
 import { registerAppEnvVarsHandlers } from "./handlers/app_env_vars_handlers";
 import { registerTemplateHandlers } from "./handlers/template_handlers";
-import { registerThemesHandlers } from "../pro/main/ipc/handlers/themes_handlers";
+// NOTE: FSL-licensed pro handlers removed during fork.
+// TODO: reimplement themes_handlers, visual_editing_handlers, agent_tool_handlers
+// under Apache-2.0 in src/ipc/handlers/ or src/agent/. See FORK.md.
 import { registerPortalHandlers } from "./handlers/portal_handlers";
 import { registerMigrationHandlers } from "./handlers/migration_handlers";
 import { registerPromptHandlers } from "./handlers/prompt_handlers";
 import { registerHelpBotHandlers } from "./handlers/help_bot_handlers";
 import { registerMcpHandlers } from "./handlers/mcp_handlers";
 import { registerSecurityHandlers } from "./handlers/security_handlers";
-import { registerVisualEditingHandlers } from "../pro/main/ipc/handlers/visual_editing_handlers";
-import { registerAgentToolHandlers } from "../pro/main/ipc/handlers/local_agent/agent_tool_handlers";
 import { registerFreeAgentQuotaHandlers } from "./handlers/free_agent_quota_handlers";
 import { registerPlanHandlers } from "./handlers/plan_handlers";
 import { registerMediaHandlers } from "./handlers/media_handlers";
@@ -76,15 +76,15 @@ export function registerIpcHandlers() {
   registerCapacitorHandlers();
   registerAppEnvVarsHandlers();
   registerTemplateHandlers();
-  registerThemesHandlers();
+  // TODO(fork): registerThemesHandlers — reimplement AI-assisted theme generation
   registerPortalHandlers();
   registerMigrationHandlers();
   registerPromptHandlers();
   registerHelpBotHandlers();
   registerMcpHandlers();
   registerSecurityHandlers();
-  registerVisualEditingHandlers();
-  registerAgentToolHandlers();
+  // TODO(fork): registerVisualEditingHandlers — reimplement Annotator/visual editing
+  // TODO(fork): registerAgentToolHandlers — wire renderer-side tool consent UI
   registerFreeAgentQuotaHandlers();
   registerPlanHandlers();
   registerMediaHandlers();

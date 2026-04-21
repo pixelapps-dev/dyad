@@ -7,7 +7,7 @@ import { getDyadAppPath } from "../../paths/paths";
 import log from "electron-log";
 import { createTypedHandler } from "./base";
 import { planContracts } from "../types/plan";
-import { resolveQuestionnaireResponse } from "../../pro/main/ipc/handlers/local_agent/tool_definitions";
+import { resolveQuestionnaireResponse } from "../../agent/compat/questionnaire_stub";
 import {
   slugify,
   buildFrontmatter,
