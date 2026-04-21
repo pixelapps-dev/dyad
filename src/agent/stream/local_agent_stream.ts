@@ -36,11 +36,30 @@ import { DyadError, DyadErrorKind } from "@/errors/dyad_error";
 import { runAgent } from "../run";
 import { buildAgentTools } from "../tools";
 import type { AgentContext } from "../types";
+import type {
+  AgentToolCallStartPayload,
+  AgentToolCallEndPayload,
+} from "@/ipc/types/agent";
 
 const logger = log.scope("local_agent_handler");
 
 const DEFAULT_MAX_STEPS = 30;
 const DB_SAVE_INTERVAL_MS = 150;
+const TOOL_PREVIEW_CHAR_LIMIT = 2_000;
+
+function safePreview(value: unknown): string | undefined {
+  if (value === undefined) return undefined;
+  let s: string;
+  try {
+    s = typeof value === "string" ? value : JSON.stringify(value);
+  } catch {
+    s = String(value);
+  }
+  if (s.length > TOOL_PREVIEW_CHAR_LIMIT) {
+    return s.slice(0, TOOL_PREVIEW_CHAR_LIMIT) + "… [truncated]";
+  }
+  return s;
+}
 
 const READ_ONLY_TOOL_NAMES = new Set<string>([
   "read_file",
@@ -48,6 +67,8 @@ const READ_ONLY_TOOL_NAMES = new Set<string>([
   "grep",
   "run_type_checks",
   "web_fetch",
+  "get_database_table_schema",
+  "read_logs",
 ]);
 
 export interface HandleLocalAgentStreamOptions {
@@ -185,13 +206,57 @@ export async function handleLocalAgentStream(
           streamingContent: fullResponse,
         });
         await flushToDb();
+      } else if (part.type === "tool-call") {
+        const p = part as {
+          toolCallId?: string;
+          toolName?: string;
+          input?: unknown;
+        };
+        const payload: AgentToolCallStartPayload = {
+          chatId: req.chatId,
+          toolCallId: p.toolCallId ?? "",
+          toolName: p.toolName ?? "",
+          inputPreview: safePreview(p.input),
+        };
+        safeSend(event.sender, "agent-tool:call-start", payload);
+      } else if (part.type === "tool-result") {
+        const p = part as {
+          toolCallId?: string;
+          toolName?: string;
+          output?: unknown;
+        };
+        const payload: AgentToolCallEndPayload = {
+          chatId: req.chatId,
+          toolCallId: p.toolCallId ?? "",
+          toolName: p.toolName ?? "",
+          ok: true,
+          outputPreview: safePreview(p.output),
+        };
+        safeSend(event.sender, "agent-tool:call-end", payload);
+      } else if (part.type === "tool-error") {
+        const p = part as {
+          toolCallId?: string;
+          toolName?: string;
+          error?: unknown;
+        };
+        const errText =
+          p.error instanceof Error
+            ? p.error.message
+            : typeof p.error === "string"
+              ? p.error
+              : JSON.stringify(p.error);
+        const payload: AgentToolCallEndPayload = {
+          chatId: req.chatId,
+          toolCallId: p.toolCallId ?? "",
+          toolName: p.toolName ?? "",
+          ok: false,
+          error: errText,
+        };
+        safeSend(event.sender, "agent-tool:call-end", payload);
       } else if (part.type === "error") {
         const errMsg = (part as { error?: unknown }).error;
         throw errMsg instanceof Error ? errMsg : new Error(String(errMsg));
       }
-      // Tool calls and results are handled by the SDK's tool executor. The UI
-      // doesn't render structured tool events in this first pass; add more
-      // cases here when we port the tool-call UI.
     }
 
     await flushToDb(true);

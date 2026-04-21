@@ -110,6 +110,41 @@ export type AgentProblemsUpdatePayload = z.infer<
 >;
 
 /**
+ * Schema for the start of a tool invocation within an agent turn.
+ *
+ * `inputPreview` is a JSON-serialized snapshot of the tool's arguments,
+ * truncated to a sane length so the renderer can show a compact summary
+ * without re-deriving it from a token stream.
+ */
+export const AgentToolCallStartSchema = z.object({
+  chatId: z.number(),
+  toolCallId: z.string(),
+  toolName: z.string(),
+  inputPreview: z.string().optional(),
+});
+
+export type AgentToolCallStartPayload = z.infer<
+  typeof AgentToolCallStartSchema
+>;
+
+/**
+ * Schema for the completion of a tool invocation within an agent turn.
+ *
+ * `ok: true` with `outputPreview` = successful result; `ok: false` with
+ * `error` = tool threw. Both previews are truncated JSON strings.
+ */
+export const AgentToolCallEndSchema = z.object({
+  chatId: z.number(),
+  toolCallId: z.string(),
+  toolName: z.string(),
+  ok: z.boolean(),
+  outputPreview: z.string().optional(),
+  error: z.string().optional(),
+});
+
+export type AgentToolCallEndPayload = z.infer<typeof AgentToolCallEndSchema>;
+
+/**
  * Schema for agent tool info.
  */
 export const AgentToolSchema = z.object({
@@ -184,6 +219,22 @@ export const agentEvents = {
   problemsUpdate: defineEvent({
     channel: "agent-tool:problems-update",
     payload: AgentProblemsUpdateSchema,
+  }),
+
+  /**
+   * Emitted when the agent begins invoking a tool.
+   */
+  toolCallStart: defineEvent({
+    channel: "agent-tool:call-start",
+    payload: AgentToolCallStartSchema,
+  }),
+
+  /**
+   * Emitted when a tool invocation finishes (either with a result or an error).
+   */
+  toolCallEnd: defineEvent({
+    channel: "agent-tool:call-end",
+    payload: AgentToolCallEndSchema,
   }),
 } as const;
 

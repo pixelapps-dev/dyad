@@ -53,9 +53,14 @@ src/agent/
     run_type_checks.ts  # npx tsc --noEmit with timeout + output cap
     add_dependency.ts   # auto-detects pnpm/yarn/npm; strict package-spec whitelist
     web_fetch.ts        # http(s) only; SSRF-safe; 2MB cap; GET/HEAD
+    # P1 Supabase-backed (only work on apps linked to a Supabase project)
+    execute_sql.ts              # runs arbitrary SQL via Supabase Management API
+    get_database_table_schema.ts # inspects tables/columns/policies/triggers/functions
+    read_logs.ts                # tails edge-function logs; timestampMicros lower bound
   stream/
     local_agent_stream.ts       # handleLocalAgentStream() over runAgent(); emits the legacy
-                                # chat:response:chunk / :end / :error IPC events
+                                # chat:response:chunk / :end / :error IPC events and the new
+                                # agent-tool:call-start / agent-tool:call-end events
   compat/
     search_replace.ts           # drop-in parse/apply for the XML dialect, used by response_processor
     questionnaire_stub.ts       # throws; points callers at the new agent
@@ -85,7 +90,18 @@ Done:
       `src/agent/stream/local_agent_stream.ts` that emits the legacy
       `chat:response:chunk` / `:end` / `:error` IPC events. Build mode gets
       the full tool set; ask / plan mode gets a read-only subset
-      (`read_file`, `list_files`, `grep`, `run_type_checks`, `web_fetch`).
+      (`read_file`, `list_files`, `grep`, `run_type_checks`, `web_fetch`,
+      `get_database_table_schema`, `read_logs`).
+- [x] Add Supabase-backed P1 tools: `execute_sql`,
+      `get_database_table_schema`, `read_logs`. Each loads the app's
+      `supabaseProjectId` / `supabaseOrganizationSlug` from the DB and
+      throws a clear error on unlinked apps.
+- [x] Define `agent-tool:call-start` / `agent-tool:call-end` event
+      contracts in `src/ipc/types/agent.ts` and forward the AI SDK's
+      `tool-call` / `tool-result` / `tool-error` stream parts from
+      `local_agent_stream.ts`. Payloads include `toolCallId`,
+      `toolName`, and JSON-truncated previews of the input / output or
+      an error string.
 - [x] Rewire all nine production imports that used to point into
       `src/pro/`:
       - `src/ipc/ipc_host.ts` (three handler registrations deleted)
@@ -100,12 +116,15 @@ Done:
 
 Pending (tracked for follow-up):
 
-- [ ] Add the remaining P1 tools to `src/agent/tools/` (execute-SQL,
-      read-logs, web-search, web-crawl, image generation). These are
-      referenced in `AgentToolName` but not yet implemented.
-- [ ] Stream structured tool-call events from
-      `src/agent/stream/local_agent_stream.ts` so the renderer can render
-      per-tool-call UI (today only text deltas are forwarded).
+- [ ] Add the remaining P1 tools to `src/agent/tools/` (`web_search`,
+      `web_crawl`, `generate_image`). These are referenced in
+      `AgentToolName` but not yet implemented. `web_search` and
+      `web_crawl` are green-field (no backing infra in the fork yet);
+      `generate_image` would currently need to point at the upstream
+      `engine.dyad.sh` host, so it's deferred until the rebrand lands.
+- [ ] Wire the renderer to consume the new `agent-tool:call-start` /
+      `agent-tool:call-end` events so the chat UI can render per-tool
+      invocation cards.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent
