@@ -11,6 +11,7 @@ import { editFileTool } from "./edit_file";
 import { runTypeChecksTool } from "./run_type_checks";
 import { addDependencyTool } from "./add_dependency";
 import { webFetchTool } from "./web_fetch";
+import { webCrawlTool } from "./web_crawl";
 import { executeSqlTool } from "./execute_sql";
 import { getDatabaseTableSchemaTool } from "./get_database_table_schema";
 import { readLogsTool } from "./read_logs";
@@ -22,7 +23,7 @@ import { readLogsTool } from "./read_logs";
  * The Supabase-backed tools (execute_sql, get_database_table_schema,
  * read_logs) only succeed on apps linked to a Supabase project; they
  * throw a clear error otherwise. Remaining P1 tools (web_search,
- * web_crawl, generate_image) are still pending — see FORK.md.
+ * generate_image) are still pending — see FORK.md.
  */
 export function buildAgentTools(ctx: AgentContext): ToolSet {
   return {
@@ -37,6 +38,7 @@ export function buildAgentTools(ctx: AgentContext): ToolSet {
     run_type_checks: runTypeChecksTool(ctx),
     add_dependency: addDependencyTool(ctx),
     web_fetch: webFetchTool(),
+    web_crawl: webCrawlTool(),
     execute_sql: executeSqlTool(ctx),
     get_database_table_schema: getDatabaseTableSchemaTool(ctx),
     read_logs: readLogsTool(ctx),

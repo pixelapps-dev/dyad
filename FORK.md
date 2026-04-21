@@ -36,6 +36,7 @@ agent and the FSL Turbo Edits DSL. Layout:
 ```
 src/agent/
   path_safety.ts        # safeResolve / safeResolveDir, symlink-aware sandbox
+  url_safety.ts         # shared assertPublicUrl for web_fetch / web_crawl
   types.ts              # AgentContext, AgentToolName, AgentTool
   run.ts                # runAgent() wrapper over streamText + stopWhen
   tools/
@@ -53,6 +54,7 @@ src/agent/
     run_type_checks.ts  # npx tsc --noEmit with timeout + output cap
     add_dependency.ts   # auto-detects pnpm/yarn/npm; strict package-spec whitelist
     web_fetch.ts        # http(s) only; SSRF-safe; 2MB cap; GET/HEAD
+    web_crawl.ts        # BFS same-origin crawler; SSRF-safe; per-page 1MB cap
     # P1 Supabase-backed (only work on apps linked to a Supabase project)
     execute_sql.ts              # runs arbitrary SQL via Supabase Management API
     get_database_table_schema.ts # inspects tables/columns/policies/triggers/functions
@@ -125,16 +127,24 @@ Done:
 Pending (tracked for follow-up):
 
 - [ ] Add the remaining P1 tools to `src/agent/tools/` (`web_search`,
-      `web_crawl`, `generate_image`). These are referenced in
-      `AgentToolName` but not yet implemented. `web_search` and
-      `web_crawl` are green-field (no backing infra in the fork yet);
+      `generate_image`). `web_search` needs a provider decision (Tavily /
+      Brave / SerpAPI) and a new settings slot for the API key.
       `generate_image` would currently need to point at the upstream
       `engine.dyad.sh` host, so it's deferred until the rebrand lands.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent
       in `src/agent/plan/` (current stub throws).
-- [ ] Delete tests and fixtures that still reference the old XML dialect.
+- [ ] Sunset the upstream XML dialect (`<dyad-write>`, `<dyad-rename>`,
+      `<dyad-delete>`, `<dyad-add-dependency>`, `<dyad-search-replace>`,
+      `cleanFullResponse`, `hasUnclosedDyadWrite`, `removeDyadTags`).
+      The dialect is still live in `response_processor.ts` and in the
+      upstream build-mode streaming path, and every test under
+      `src/__tests__/chat_stream_handlers.test.ts` +
+      `src/ipc/processors/response_processor.test.ts` covers
+      production code. Ripping the tests out now would drop real
+      coverage; they can only go once `response_processor.ts` itself
+      migrates to the new agent path.
 - [ ] Rebrand: swap product name, icons, protocol handler (`dyad://`),
       PostHog key, auto-update host (`api.dyad.sh`), engine host
       (`engine.dyad.sh`), and GitHub publisher (`dyad-sh/dyad`).

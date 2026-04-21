@@ -67,6 +67,7 @@ const READ_ONLY_TOOL_NAMES = new Set<string>([
   "grep",
   "run_type_checks",
   "web_fetch",
+  "web_crawl",
   "get_database_table_schema",
   "read_logs",
 ]);
