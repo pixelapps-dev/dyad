@@ -184,6 +184,21 @@
       "@modelcontextprotocol/sdk": "$@modelcontextprotocol/sdk"
     }
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "@vscode/ripgrep",
+      "better-sqlite3",
+      "core-js",
+      "dugite",
+      "electron",
+      "electron-winstaller",
+      "esbuild",
+      "node-pty",
+      "protobufjs",
+      "sharp"
+    ]
+  },
   "engines": {
     "node": ">=24"
   },
