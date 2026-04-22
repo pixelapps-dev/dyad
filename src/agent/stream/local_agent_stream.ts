@@ -65,12 +65,20 @@ const READ_ONLY_TOOL_NAMES = new Set<string>([
   "read_file",
   "list_files",
   "grep",
+  "code_search",
   "run_type_checks",
   "web_fetch",
   "web_crawl",
   "web_search",
   "get_database_table_schema",
   "read_logs",
+  // Agent-state tools are safe for plan / ask mode: they advertise
+  // intent to the renderer but don't mutate the workspace or DB
+  // state the user hasn't already approved.
+  "update_todos",
+  "write_plan",
+  "exit_plan",
+  "read_guide",
 ]);
 
 export interface HandleLocalAgentStreamOptions {

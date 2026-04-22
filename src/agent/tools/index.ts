@@ -17,6 +17,11 @@ import { generateImageTool } from "./generate_image";
 import { executeSqlTool } from "./execute_sql";
 import { getDatabaseTableSchemaTool } from "./get_database_table_schema";
 import { readLogsTool } from "./read_logs";
+import { updateTodosTool } from "./update_todos";
+import { writePlanTool } from "./write_plan";
+import { exitPlanTool } from "./exit_plan";
+import { setChatSummaryTool } from "./set_chat_summary";
+import { readGuideTool } from "./read_guide";
 
 /**
  * Build the agent tool set for a given app context.
@@ -38,6 +43,9 @@ export function buildAgentTools(ctx: AgentContext): ToolSet {
     copy_file: copyFileTool(ctx),
     list_files: listFilesTool(ctx),
     grep: grepTool(ctx),
+    // Compatibility alias so prompts trained on the upstream tool
+    // vocabulary keep working.
+    code_search: grepTool(ctx),
     run_type_checks: runTypeChecksTool(ctx),
     add_dependency: addDependencyTool(ctx),
     web_fetch: webFetchTool(),
@@ -47,5 +55,12 @@ export function buildAgentTools(ctx: AgentContext): ToolSet {
     execute_sql: executeSqlTool(ctx),
     get_database_table_schema: getDatabaseTableSchemaTool(ctx),
     read_logs: readLogsTool(ctx),
+    // Agent-state tools — emit / write state the renderer already
+    // consumes via existing IPC / atoms.
+    update_todos: updateTodosTool(ctx),
+    write_plan: writePlanTool(ctx),
+    exit_plan: exitPlanTool(ctx),
+    set_chat_summary: setChatSummaryTool(ctx),
+    read_guide: readGuideTool(),
   };
 }

@@ -24,7 +24,13 @@ const ignore = (file: string) => {
   if (file.startsWith("/drizzle")) {
     return false;
   }
-  if (file.startsWith("/scaffold")) {
+  if (file.startsWith("/scaffold") && !file.startsWith("/scaffolds")) {
+    return false;
+  }
+  // Bundled Phase-5 scaffolds (nextjs-marketing, etc.) ship inside
+  // the packaged app so createFromTemplate can copy from them
+  // without a network clone.
+  if (file.startsWith("/scaffolds")) {
     return false;
   }
 

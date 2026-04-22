@@ -5,6 +5,7 @@ import { copyDirectoryRecursive } from "../utils/file_utils";
 import { gitClone, getCurrentCommitHash } from "../utils/git_utils";
 import { readSettings } from "@/main/settings";
 import { getTemplateOrThrow } from "../utils/template_utils";
+import { BUNDLED_SCAFFOLD_TEMPLATE_IDS } from "@/shared/templates";
 import log from "electron-log";
 import { DyadError, DyadErrorKind } from "@/errors/dyad_error";
 
@@ -23,6 +24,14 @@ export async function createFromTemplate({
       path.join(__dirname, "..", "..", "scaffold"),
       fullAppPath,
     );
+    return;
+  }
+
+  // Bundled scaffolds: copy from `scaffolds/<id>/` inside the app
+  // bundle rather than cloning a remote repo.
+  if (BUNDLED_SCAFFOLD_TEMPLATE_IDS.has(templateId)) {
+    const source = path.join(__dirname, "..", "..", "scaffolds", templateId);
+    await copyDirectoryRecursive(source, fullAppPath);
     return;
   }
 

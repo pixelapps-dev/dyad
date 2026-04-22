@@ -28,11 +28,31 @@ export const DEFAULT_TEMPLATE = {
   isOfficial: true,
 };
 
+export const NEXTJS_MARKETING_TEMPLATE_ID = "nextjs-marketing";
+/**
+ * Template ids that ship inside the Pagemate binary under
+ * `scaffolds/<id>/` rather than being cloned from GitHub. The
+ * `createFromTemplate` handler copies from the bundled directory
+ * directly.
+ */
+export const BUNDLED_SCAFFOLD_TEMPLATE_IDS = new Set<string>([
+  NEXTJS_MARKETING_TEMPLATE_ID,
+]);
+
 const PORTAL_MINI_STORE_ID = "portal-mini-store";
 export const NEON_TEMPLATE_IDS = new Set<string>([PORTAL_MINI_STORE_ID]);
 
 export const localTemplatesData: Template[] = [
   DEFAULT_TEMPLATE,
+  {
+    id: NEXTJS_MARKETING_TEMPLATE_ID,
+    title: "Next.js Marketing Site",
+    description:
+      "B2B marketing starter: hero, pricing, about, contact form, 404. Next.js 15 App Router + Tailwind + TypeScript. Ships inside Pagemate.",
+    imageUrl:
+      "https://github.com/user-attachments/assets/5b700eab-b28c-498e-96de-8649b14c16d9",
+    isOfficial: true,
+  },
   {
     id: "next",
     title: "Next.js Template",
@@ -48,7 +68,7 @@ export const localTemplatesData: Template[] = [
     description: "Uses Neon DB, Payload CMS, Next.js",
     imageUrl:
       "https://github.com/user-attachments/assets/ed86f322-40bf-4fd5-81dc-3b1d8a16e12b",
-    githubUrl: "https://github.com/pixelapps-dev/portal-mini-store-template",
+    githubUrl: "https://github.com/dyad-sh/portal-mini-store-template",
     isOfficial: true,
     isExperimental: true,
     requiresNeon: true,
