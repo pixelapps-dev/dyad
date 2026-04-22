@@ -23,7 +23,7 @@ const logger = log.scope("image_generation_handlers");
 const activeControllers = new Map<string, AbortController>();
 
 const DYAD_ENGINE_URL =
-  process.env.DYAD_ENGINE_URL ?? "https://engine.dyad.sh/v1";
+  process.env.DYAD_ENGINE_URL ?? "https://engine.pagemate.dev/v1";
 
 const IMAGE_GENERATION_TIMEOUT_MS = 120_000;
 const MAX_IMAGE_SIZE = 50 * 1024 * 1024; // 50 MB

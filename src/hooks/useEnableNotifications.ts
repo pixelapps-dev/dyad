@@ -4,7 +4,7 @@ import { detectIsMac } from "@/hooks/useChatModeToggle";
 
 function sendTestNotification() {
   if (Notification.permission === "granted") {
-    new Notification("Dyad", {
+    new Notification("Pagemate", {
       body: "Notifications are working! You'll be notified when responses finish or input is needed.",
     });
   }

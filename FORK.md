@@ -179,11 +179,20 @@ Done:
       public contract.
 - [x] Ship `scripts/rebrand.mjs` so a rebrand lands in one command
       once a new product name is picked. The script updates
-      `package.json`, `forge.config.ts`, and the hard-coded
-      `api.dyad.sh` / `engine.dyad.sh` / `dyad-sh/dyad` references in
-      the IPC utilities. Dry-runs by default; `--apply` writes. Does
-      not touch internal `dyad*` identifiers, issue-link comments, or
-      `<dyad-*>` XML tags.
+      `package.json`, `forge.config.ts`, the hard-coded `api.dyad.sh`
+      / `engine.dyad.sh` / `dyad-sh/dyad` references in the IPC
+      utilities, and user-visible product-name strings in
+      notifications, error/help dialogs, and the GitHub promo.
+      Dry-runs by default; `--apply` writes. Does not touch internal
+      `dyad*` identifiers, `<dyad-*>` XML tags, the upstream "Dyad"
+      hosted-AI provider entry, or the Dyad Pro promo messages
+      (those refer to upstream paid products that Pagemate doesn't
+      have — delete them in a follow-up).
+- [x] Execute the rebrand to **Pagemate** (product name) at
+      `pixelapps-dev/pagemate` (GitHub slug) with `api.pagemate.dev`
+      / `engine.pagemate.dev` hosts and `pagemate://` protocol
+      scheme. 17 files touched; NOTICE/LICENSE keep the upstream
+      "Dyad" attribution per Apache-2.0 §4(d).
 
 Pending (tracked for follow-up):
 
@@ -207,12 +216,24 @@ Pending (tracked for follow-up):
       production code. Ripping the tests out now would drop real
       coverage; they can only go once `response_processor.ts` itself
       migrates to the new agent path.
-- [ ] Pick a product name and run `node scripts/rebrand.mjs --name
-      "<NewName>" --github-slug "<org>/<repo>" --api-host "<api>"
-      --engine-host "<engine>" --protocol "<scheme>" --apply`. After
-      the script: replace `assets/icon/*`, update the PostHog project
-      key, and decide whether to mass-rename internal `dyad*`
-      identifiers in a follow-up commit.
+- [ ] Replace `assets/icon/*` with Pagemate-branded icon files
+      (PNG / ICO / ICNS for the installer and app window).
+- [ ] Mint a new PostHog project and update `src/renderer.tsx` with
+      the new project key. Re-run the rebrand script with
+      `--posthog-key phc_...` to do it in-place.
+- [ ] Strip or rename Dyad Pro / dyad.sh promotional links (promo
+      messages in `src/components/chat/PromoMessage.tsx`,
+      `academy.dyad.sh` and `dyad.sh/docs` references in
+      `HelpDialog.tsx`). These point at upstream paid / hosted
+      services that Pagemate doesn't offer.
+- [ ] Decide whether to keep the upstream "Dyad" hosted-AI provider
+      entry (`src/ipc/shared/language_model_constants.ts` `auto`
+      provider) or drop it; the label is still "Dyad" because it's
+      legitimately the Dyad cloud's endpoint.
+- [ ] Optional: mass-rename internal `dyad*` identifiers
+      (`dyadRequestId`, `DYAD_ENGINE_URL`, `enableDyadPro`, …) in a
+      follow-up commit. Keep it separate from the rebrand so the
+      diff stays reviewable.
 - [ ] Fresh pnpm lockfile once renames settle (`pnpm install`).
 
 ## Why native tool-calling

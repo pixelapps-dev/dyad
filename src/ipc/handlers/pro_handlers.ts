@@ -52,7 +52,7 @@ export function registerProHandlers() {
       return null;
     }
 
-    const url = "https://api.dyad.sh/v1/user/info";
+    const url = "https://api.pagemate.dev/v1/user/info";
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
@@ -122,7 +122,7 @@ export function registerProHandlers() {
         input.requestId,
         {
           apiKey,
-          baseURL: dyadEngineUrl ?? "https://engine.dyad.sh/v1",
+          baseURL: dyadEngineUrl ?? "https://engine.pagemate.dev/v1",
           dyadOptions: {},
           settings,
         },

@@ -36,7 +36,7 @@ function getRemoteLanguageModelCatalogUrl() {
     return `http://localhost:${process.env.FAKE_LLM_PORT}/api/language-model-catalog`;
   }
 
-  return "https://api.dyad.sh/v1/language-model-catalog";
+  return "https://api.pagemate.dev/v1/language-model-catalog";
 }
 
 export type { ThemeGenerationModelOption };

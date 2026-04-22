@@ -77,7 +77,7 @@ export async function getModelClient(
       const enableSmartFilesContext = settings.enableProSmartFilesContextMode;
       const provider = createDyadEngine({
         apiKey: dyadApiKey,
-        baseURL: dyadEngineUrl ?? "https://engine.dyad.sh/v1",
+        baseURL: dyadEngineUrl ?? "https://engine.pagemate.dev/v1",
         dyadOptions: {
           enableLazyEdits:
             settings.selectedChatMode === "ask"

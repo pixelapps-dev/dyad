@@ -91,7 +91,7 @@ function formatSystemInfoSection(
   userBudget: UserBudgetInfo | undefined,
 ): string {
   return `## System Information
-- Dyad Version: ${debugInfo.dyadVersion}
+- Pagemate Version: ${debugInfo.dyadVersion}
 - Platform: ${debugInfo.platform}
 - Architecture: ${debugInfo.architecture}
 - Node Version: ${debugInfo.nodeVersion || "n/a"}
@@ -517,8 +517,8 @@ ${formatLogsSection(debugInfo)}
               <span className="text-sm font-semibold">Non-AI issues</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Includes error logs to troubleshoot non-AI issues with Dyad (UI
-              bugs, crashes, setup problems, etc.).
+              Includes error logs to troubleshoot non-AI issues with Pagemate
+              (UI bugs, crashes, setup problems, etc.).
             </p>
             <Button
               variant="outline"
@@ -584,7 +584,7 @@ ${formatLogsSection(debugInfo)}
           </ReviewDetailsSection>
 
           <ReviewDetailsSection title="System Information" mono={false}>
-            <p>Dyad Version: {debugBundle.system.dyadVersion}</p>
+            <p>Pagemate Version: {debugBundle.system.dyadVersion}</p>
             <p>Platform: {debugBundle.system.platform}</p>
             <p>Architecture: {debugBundle.system.architecture}</p>
             <p>

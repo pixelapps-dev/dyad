@@ -10,7 +10,7 @@ import { gitIsIgnoredIso } from "./git_utils";
 const logger = log.scope("cloud_sandbox_provider");
 
 const DYAD_ENGINE_URL =
-  process.env.DYAD_ENGINE_URL ?? "https://engine.dyad.sh/v1";
+  process.env.DYAD_ENGINE_URL ?? "https://engine.pagemate.dev/v1";
 const CLOUD_SANDBOX_EXCLUDED_DIRS = new Set(["node_modules", ".git", ".next"]);
 const CLOUD_SANDBOX_ROOT_ALLOWLIST = new Set([".env", ".env.local"]);
 

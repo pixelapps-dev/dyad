@@ -33,7 +33,7 @@ function getRemoteDesktopConfigUrl() {
     return process.env.DYAD_DESKTOP_CONFIG_URL;
   }
 
-  return "https://api.dyad.sh/v1/desktop-config";
+  return "https://api.pagemate.dev/v1/desktop-config";
 }
 
 async function fetchRemoteDesktopConfig(): Promise<RemoteDesktopConfig | null> {

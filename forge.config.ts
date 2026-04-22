@@ -95,8 +95,8 @@ const config: ForgeConfig = {
       : undefined,
     protocols: [
       {
-        name: "Dyad",
-        schemes: ["dyad"],
+        name: "Pagemate",
+        schemes: ["pagemate"],
       },
     ],
     icon: "./assets/icon/logo",
@@ -143,12 +143,12 @@ const config: ForgeConfig = {
         ? {
             windowsSign,
             iconUrl:
-              "https://raw.githubusercontent.com/dyad-sh/dyad/main/assets/icon/logo.ico",
+              "https://raw.githubusercontent.com/pixelapps-dev/pagemate/main/assets/icon/logo.ico",
             setupIcon: "./assets/icon/logo.ico",
           }
         : {
             iconUrl:
-              "https://raw.githubusercontent.com/dyad-sh/dyad/main/assets/icon/logo.ico",
+              "https://raw.githubusercontent.com/pixelapps-dev/pagemate/main/assets/icon/logo.ico",
             setupIcon: "./assets/icon/logo.ico",
           },
     ),
@@ -173,8 +173,8 @@ const config: ForgeConfig = {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: "dyad-sh",
-          name: "dyad",
+          owner: "pixelapps-dev",
+          name: "pagemate",
         },
         draft: true,
         force: true,

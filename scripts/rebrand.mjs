@@ -108,12 +108,17 @@ const edits = [
   {
     file: "forge.config.ts",
     replacements: [
+      [`name: "Dyad",`, `name: "${name}",`],
       [`schemes: ["dyad"],`, `schemes: ["${protocol}"],`],
       [
         `"https://raw.githubusercontent.com/dyad-sh/dyad/main/assets/icon/logo.ico"`,
         `"https://raw.githubusercontent.com/${githubSlug}/main/assets/icon/logo.ico"`,
       ],
-      [`name: "dyad",`, `name: "${lowerName}",`],
+      // Publisher block: owner + name pair on consecutive lines.
+      [
+        `repository: {\n          owner: "dyad-sh",\n          name: "dyad",\n        },`,
+        `repository: {\n          owner: "${githubSlug.split("/")[0]}",\n          name: "${githubSlug.split("/")[1]}",\n        },`,
+      ],
     ],
   },
   {
@@ -194,6 +199,64 @@ const edits = [
       [
         '"https://api.dyad.sh/v1/templates"',
         `"https://${apiHost}/v1/templates"`,
+      ],
+    ],
+  },
+  // User-facing product-name strings. Deliberately narrow — only the
+  // obvious "Dyad"-as-product-name references, not the Dyad Pro promo
+  // messages (which refer to upstream paid products and should be
+  // removed rather than renamed) or the "Dyad" hosted AI provider
+  // entry (which still refers to the upstream cloud).
+  {
+    file: "src/hooks/useEnableNotifications.ts",
+    replacements: [[`new Notification("Dyad"`, `new Notification("${name}"`]],
+  },
+  {
+    file: "src/hooks/usePlanEvents.ts",
+    replacements: [
+      [`app?.name ?? "Dyad"`, `app?.name ?? "${name}"`],
+    ],
+  },
+  {
+    file: "src/hooks/useStreamChat.ts",
+    replacements: [
+      [`app?.name ?? "Dyad"`, `app?.name ?? "${name}"`],
+    ],
+  },
+  {
+    file: "src/components/ErrorBoundary.tsx",
+    replacements: [
+      [`- Dyad Version: `, `- ${name} Version: `],
+      [
+        `"[bug] Error in Dyad application"`,
+        `"[bug] Error in ${name} application"`,
+      ],
+      [
+        `"https://github.com/dyad-sh/dyad/issues/new?title=`,
+        `"https://github.com/${githubSlug}/issues/new?title=`,
+      ],
+      [
+        `"https://github.com/dyad-sh/dyad/issues/new"`,
+        `"https://github.com/${githubSlug}/issues/new"`,
+      ],
+      [`re-opening Dyad as a temporary`, `re-opening ${name} as a temporary`],
+    ],
+  },
+  {
+    file: "src/components/HelpDialog.tsx",
+    replacements: [
+      [`- Dyad Version: `, `- ${name} Version: `],
+      [`Dyad Version: {debugBundle.system.dyadVersion}`, `${name} Version: {debugBundle.system.dyadVersion}`],
+      [`troubleshoot non-AI issues with Dyad`, `troubleshoot non-AI issues with ${name}`],
+    ],
+  },
+  {
+    file: "src/components/chat/PromoMessage.tsx",
+    replacements: [
+      [`Like Dyad? Star it on `, `Like ${name}? Star it on `],
+      [
+        `url: "https://github.com/dyad-sh/dyad",`,
+        `url: "https://github.com/${githubSlug}",`,
       ],
     ],
   },
