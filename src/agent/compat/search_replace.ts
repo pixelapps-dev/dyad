@@ -47,7 +47,18 @@ export function parseSearchReplaceBlocks(input: string): SearchReplaceBlock[] {
   return blocks;
 }
 
+/**
+ * Result shape compatible with the upstream Turbo-Edits DSL caller. When
+ * every block applied cleanly, `success` is true and `content` is the
+ * post-patch file contents; otherwise `success` is false and `error`
+ * is a human-readable explanation. `updated`, `appliedCount`, and
+ * `failures` are retained for fork callers that want finer-grained
+ * diagnostics.
+ */
 export interface ApplySearchReplaceResult {
+  success: boolean;
+  content?: string;
+  error?: string;
   updated: string;
   appliedCount: number;
   failures: Array<{ block: number; reason: string }>;
@@ -66,6 +77,16 @@ export function applySearchReplace(
   let current = fileContents;
   let appliedCount = 0;
   const failures: ApplySearchReplaceResult["failures"] = [];
+
+  if (blocks.length === 0) {
+    return {
+      success: false,
+      error: "no search-replace blocks parsed from payload",
+      updated: fileContents,
+      appliedCount: 0,
+      failures: [],
+    };
+  }
 
   blocks.forEach((block, idx) => {
     const first = current.indexOf(block.searchContent);
@@ -91,5 +112,23 @@ export function applySearchReplace(
     appliedCount++;
   });
 
-  return { updated: current, appliedCount, failures };
+  if (failures.length > 0) {
+    return {
+      success: false,
+      error: failures
+        .map((f) => `block ${f.block + 1}: ${f.reason}`)
+        .join("; "),
+      updated: current,
+      appliedCount,
+      failures,
+    };
+  }
+
+  return {
+    success: true,
+    content: current,
+    updated: current,
+    appliedCount,
+    failures: [],
+  };
 }
