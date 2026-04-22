@@ -135,6 +135,18 @@ export function readSettings(): UserSettings {
         }
       }
     }
+    if (combinedSettings.webSearch) {
+      for (const providerId of ["tavily", "firecrawl", "exa"] as const) {
+        const provider = combinedSettings.webSearch[providerId];
+        if (provider?.apiKey) {
+          const encryptionType = provider.apiKey.encryptionType;
+          provider.apiKey = {
+            value: decrypt(provider.apiKey),
+            encryptionType,
+          };
+        }
+      }
+    }
     if (combinedSettings.githubAccessToken) {
       const encryptionType = combinedSettings.githubAccessToken.encryptionType;
       combinedSettings.githubAccessToken = {
@@ -258,6 +270,14 @@ export function writeSettings(settings: Partial<UserSettings>): void {
         newSettings.neon.refreshToken = encrypt(
           newSettings.neon.refreshToken.value,
         );
+      }
+    }
+    if (newSettings.webSearch) {
+      for (const providerId of ["tavily", "firecrawl", "exa"] as const) {
+        const provider = newSettings.webSearch[providerId];
+        if (provider?.apiKey) {
+          provider.apiKey = encrypt(provider.apiKey.value);
+        }
       }
     }
     for (const provider in newSettings.providerSettings) {

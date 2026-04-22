@@ -124,6 +124,12 @@ Done:
       uses `settings.webSearch.defaultProvider` or falls through the
       configured providers in priority order. Results are normalized
       across providers to `{title, url, snippet, score?, publishedDate?}`.
+- [x] Add a Settings -> Integrations -> Web Search pane
+      (`src/components/WebSearchSettings.tsx`) with a masked-key input
+      + Replace / Remove buttons per provider and a default-provider
+      picker. Keys round-trip through `writeSettings()` /
+      `readSettings()` with `safeStorage` encryption like every other
+      stored secret.
 - [x] Rewire all nine production imports that used to point into
       `src/pro/`:
       - `src/ipc/ipc_host.ts` (three handler registrations deleted)
@@ -141,9 +147,6 @@ Pending (tracked for follow-up):
 - [ ] Add the remaining P1 tool to `src/agent/tools/`: `generate_image`.
       It would currently need to point at the upstream `engine.dyad.sh`
       host, so it's deferred until the rebrand lands.
-- [ ] Add a settings pane UI for `settings.webSearch` so users can
-      paste Tavily / Firecrawl / Exa API keys in-app. The schema slot
-      is wired; only the React form is missing.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent

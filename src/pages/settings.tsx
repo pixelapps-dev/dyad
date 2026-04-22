@@ -26,6 +26,7 @@ import { ChatEventNotificationSwitch } from "@/components/ChatEventNotificationS
 import { AutoUpdateSwitch } from "@/components/AutoUpdateSwitch";
 import { ReleaseChannelSelector } from "@/components/ReleaseChannelSelector";
 import { NeonIntegration } from "@/components/NeonIntegration";
+import { WebSearchSettings } from "@/components/WebSearchSettings";
 import { RuntimeModeSelector } from "@/components/RuntimeModeSelector";
 import { NodePathSelector } from "@/components/NodePathSelector";
 import { ToolsMcpSettings } from "@/components/settings/ToolsMcpSettings";
@@ -142,6 +143,9 @@ export default function SettingsPage() {
               </div>
               <div id={SETTING_IDS.neon}>
                 <NeonIntegration />
+              </div>
+              <div id={SETTING_IDS.webSearch}>
+                <WebSearchSettings />
               </div>
             </div>
           </div>
