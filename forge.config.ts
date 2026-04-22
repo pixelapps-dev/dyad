@@ -160,7 +160,7 @@ const config: ForgeConfig = {
     }),
     new MakerDeb({
       options: {
-        mimeType: ["x-scheme-handler/dyad"],
+        mimeType: ["x-scheme-handler/pagemate"],
         icon: "./assets/icon/logo.png",
       },
     }),

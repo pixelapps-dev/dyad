@@ -1,34 +1,35 @@
-# Dyad
+# Pagemate
 
-Dyad is a local, open-source AI app builder. It's fast, private, and fully under your control — like Lovable, v0, or Bolt, but running right on your machine.
+Pagemate is a local, open-source B2B website builder built on top of a
+clean-room AI agent stack. It's a fork of [Dyad](https://github.com/dyad-sh/dyad)'s
+Apache-2.0 core with the Functional-Source-Licensed "Pro" carve-out removed and
+rewritten natively against the Vercel AI SDK's tool-calling protocol.
 
-[![Image](https://github.com/user-attachments/assets/f6c83dfc-6ffd-4d32-93dd-4b9c46d17790)](https://dyad.sh/)
+## Features
 
-More info at: [https://dyad.sh/](https://dyad.sh/)
+- **Local-first**: runs as an Electron desktop app — no sign-up, no phone-home.
+- **Bring your own keys**: plug in OpenAI / Anthropic / Google / OpenRouter /
+  xAI / Bedrock / Azure, plus optional Tavily / Firecrawl / Exa for web search
+  and OpenAI / Stability for image generation.
+- **Integrations**: GitHub, Vercel, Supabase, Neon — all first-class.
+- **Apache-2.0** throughout. No competing-use restrictions.
 
-## 🚀 Features
+## Download
 
-- ⚡️ **Local**: Fast, private and no lock-in.
-- 🛠 **Bring your own keys**: Use your own AI API keys — no vendor lock-in.
-- 🖥️ **Cross-platform**: Easy to run on Mac or Windows.
+No sign-up required. The fork does not yet publish signed binaries; build from
+source via `pnpm install && pnpm start` (or run the `make` / `publish` scripts
+from a signed CI pipeline — see `forge.config.ts`).
 
-## 📦 Download
+## Contributing
 
-No sign-up required. Just download and go.
-
-### [👉 Download for your platform](https://www.dyad.sh/#download)
-
-## 🤝 Community
-
-Join our growing community of AI app builders on **Reddit**: [r/dyadbuilders](https://www.reddit.com/r/dyadbuilders/) - share your projects and get help from the community!
-
-## 🛠️ Contributing
-
-**Dyad** is open-source (see License info below).
-
-If you're interested in contributing to dyad, please read our [contributing](./CONTRIBUTING.md) doc.
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
-- All the code in this repo outside of `src/pro` is open-source and licensed under Apache 2.0 - see [LICENSE](./LICENSE).
-- All the code in this repo within `src/pro` is fair-source and licensed under [Functional Source License 1.1 Apache 2.0](https://fsl.software/) - see [LICENSE](./src/pro/LICENSE).
+Apache 2.0 — see [LICENSE](./LICENSE) and [NOTICE](./NOTICE).
+
+## Fork notes
+
+See [FORK.md](./FORK.md) for the relationship to upstream Dyad, what was
+removed with the FSL carve-out, and the replacement-subsystem tree at
+`src/agent/`.

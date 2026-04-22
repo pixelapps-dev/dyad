@@ -1,12 +1,12 @@
 {
   "name": "pagemate",
   "version": "0.44.0-beta.1",
-  "description": "Free, local, open-source AI app builder",
+  "description": "B2B website builder on top of the Pagemate agent stack (fork of Dyad, Apache-2.0 core).",
   "keywords": [],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": {
-    "name": "Will Chen",
-    "email": "willchen90@gmail.com"
+    "name": "Pagemate",
+    "url": "https://github.com/pixelapps-dev/pagemate"
   },
   "repository": {
     "type": "git",
