@@ -76,39 +76,9 @@ jobs:
             echo "$NON_CONFIG_FILES"
           fi
 
-      - name: Detect privileged author
-        id: author-check
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          AUTHOR=""
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            AUTHOR="${{ github.event.pull_request.user.login }}"
-          fi
-          echo "Author: $AUTHOR"
-          case "$AUTHOR" in
-            wwwillchen|keppo-bot|keppo-bot[bot]|dyad-assistant|azizmejri1)
-              echo "is_privileged=true" >> $GITHUB_OUTPUT
-              ;;
-            *)
-              echo "is_privileged=false" >> $GITHUB_OUTPUT
-              ;;
-          esac
-
-      # Sets the dynamic matrix for the build and e2e-tests jobs based on the PR author.
-      # The "image" field is a JSON-encoded array string so that fromJSON() in runs-on
-      # can produce the correct label(s) for both GitHub-hosted and self-hosted runners.
-      #
-      # Privileged authors (wwwillchen, keppo-bot/keppo-bot[bot], dyad-assistant, azizmejri1):
-      #   - Self-hosted macOS ARM64 runners, no Windows, no sharding.
-      #
-      #   build (macOS self-hosted) ──> e2e-tests (macOS self-hosted, shard 1/1)
-      #                                          │
-      #                                          v
-      #                                    merge-reports
-      #
-      # All other authors:
-      #   - GitHub-hosted runners for macOS + Windows, 4 shards each.
+      # Pagemate runs CI exclusively on GitHub-hosted runners. Upstream's
+      # self-hosted macOS ARM64 pool for trusted authors doesn't exist in
+      # this fork, so there's no privileged-author detection step.
       #
       #   build (macOS) ──┐
       #   build (Windows) ┼──> e2e-tests (macOS shards 1-4)    ──┐
@@ -117,24 +87,17 @@ jobs:
       - name: Set CI matrix
         id: matrix
         run: |
-          if [ "${{ steps.author-check.outputs.is_privileged }}" = "true" ]; then
-            echo 'build_os=[{"name":"macos","image":"[\"self-hosted\",\"macOS\",\"ARM64\"]"}]' >> $GITHUB_OUTPUT
-            echo 'e2e_os=[{"name":"macos","image":"[\"self-hosted\",\"macOS\",\"ARM64\"]"}]' >> $GITHUB_OUTPUT
-            echo 'e2e_shard=[1,2]' >> $GITHUB_OUTPUT
-            echo 'e2e_shard_total=[2]' >> $GITHUB_OUTPUT
-          else
-            echo 'build_os=[{"name":"windows","image":"[\"windows-latest\"]"},{"name":"macos","image":"[\"macos-latest\"]"}]' >> $GITHUB_OUTPUT
-            echo 'e2e_os=[{"name":"windows","image":"[\"windows-latest\"]"},{"name":"macos","image":"[\"macos-latest\"]"}]' >> $GITHUB_OUTPUT
-            echo 'e2e_shard=[1,2,3,4]' >> $GITHUB_OUTPUT
-            echo 'e2e_shard_total=[4]' >> $GITHUB_OUTPUT
-          fi
+          echo 'build_os=[{"name":"windows","image":"[\"windows-latest\"]"},{"name":"macos","image":"[\"macos-latest\"]"}]' >> $GITHUB_OUTPUT
+          echo 'e2e_os=[{"name":"windows","image":"[\"windows-latest\"]"},{"name":"macos","image":"[\"macos-latest\"]"}]' >> $GITHUB_OUTPUT
+          echo 'e2e_shard=[1,2,3,4]' >> $GITHUB_OUTPUT
+          echo 'e2e_shard_total=[4]' >> $GITHUB_OUTPUT
 
   build:
     needs: [check-changes]
     if: needs.check-changes.outputs.should_run_tests == 'true'
     # Why Mac and Windows?
     # I can't run electron playwright on ubuntu-latest and
-    # Linux support for Dyad is experimental so not as important
+    # Linux support for Pagemate is experimental so not as important
     # as Mac + Windows
     strategy:
       fail-fast: false
@@ -203,9 +166,6 @@ jobs:
             scaffold/
             testing/fake-llm-server/
           retention-days: 1
-      - name: Cleanup (self-hosted macOS)
-        if: always() && contains(matrix.os.image, 'self-hosted')
-        run: bash scripts/ci-cleanup-macos.sh
 
   e2e-tests:
     needs: [check-changes, build]
@@ -271,8 +231,7 @@ jobs:
       - name: E2E tests (Shard ${{ matrix.shard }}/${{ matrix.shardTotal }})
         env:
           FLAKINESS_ACCESS_TOKEN: ${{ secrets.FLAKINESS_ACCESS_TOKEN }}
-          # Self-hosted macOS runners use fewer retries (1) vs GitHub-hosted CI (2)
-          PLAYWRIGHT_RETRIES: ${{ contains(matrix.os.image, 'self-hosted') && '1' || '2' }}
+          PLAYWRIGHT_RETRIES: "2"
         # You can add debug logging to make it easier to see what's failing
         # by adding "DEBUG=pw:browser" in front.
         # Use blob reporter for sharding and merge capabilities
@@ -302,9 +261,6 @@ jobs:
           name: flakiness-report-${{ matrix.os.name }}-shard-${{ matrix.shard }}
           path: flakiness-report
           retention-days: 1
-      - name: Cleanup (self-hosted macOS)
-        if: always() && contains(matrix.os.image, 'self-hosted')
-        run: bash scripts/ci-cleanup-macos.sh
 
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed

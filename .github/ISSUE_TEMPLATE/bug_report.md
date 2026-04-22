@@ -7,8 +7,7 @@ assignees: ""
 ---
 
 <!--
-We recommend filing bugs from the app because it automatically includes logs and system info!
-https://www.dyad.sh/docs/help#report-a-bug
+We recommend filing bugs from the app because it automatically includes logs and system info.
 
 Please fill in all fields in English.
 -->

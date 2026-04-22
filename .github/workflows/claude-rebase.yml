@@ -81,10 +81,10 @@ jobs:
       - name: Configure push remote for fork PRs
         if: steps.check-author.outputs.should_continue == 'true'
         run: |
-          # claude-code-action overwrites origin's fetch URL to point to dyad-sh/dyad
-          # (using GITHUB_REPOSITORY which is always the base repo in pull_request_target events).
-          # Setting pushurl separately ensures git push still targets the fork,
-          # because git uses pushurl over url when both are configured.
+          # claude-code-action overwrites origin's fetch URL to point at GITHUB_REPOSITORY
+          # (the base repo in pull_request_target events). Setting pushurl separately
+          # ensures git push still targets the fork, because git uses pushurl over url
+          # when both are configured.
           #
           # We use a GitHub App token instead of GITHUB_TOKEN so that
           # the push creates real PR events (synchronize) that trigger downstream workflows
