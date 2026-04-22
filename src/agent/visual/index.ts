@@ -9,18 +9,19 @@
  *      needed; the picker UI is rendered from
  *      `src/components/chat/AuxiliaryActionsMenu.tsx`.
  *
- *   2. **Screenshot / DOM annotator** — a click-to-select overlay on
- *      top of the preview iframe that pushed `ComponentSelection`
- *      objects into the chat input. That lived at
- *      `src/pro/ui/components/Annotator/` and was cut. The UI slot is
- *      held today by the "Annotator coming soon" placeholder at
- *      `src/components/preview_panel/AnnotatorOnlyForPro.tsx`.
+ *   2. **Screenshot annotator** — v1 lives at
+ *      `src/components/preview_panel/Annotator.tsx`. It captures the
+ *      preview as a PNG and hands it to the chat-attachments
+ *      pipeline. Drawing / pin-marker tools are still deferred.
  *
- * This file exists so future annotator work has a clear home. It
- * defines the postMessage protocol the iframe-side script and the
- * Electron renderer will use once the clean-room annotator lands.
+ *   3. **DOM annotator** — a click-to-select overlay on top of the
+ *      preview iframe that would push `ComponentSelection` objects
+ *      into the chat input. Click-to-select for in-source editing
+ *      already works via the existing `VisualEditingToolbar` and the
+ *      `@dyad-sh/react-vite-component-tagger` Vite plugin; the
+ *      protocol below exists for a future richer overlay.
  *
- * When implementing, create alongside this file:
+ * When implementing the richer overlay, create alongside this file:
  *
  *   iframe_client.ts   — runs inside the preview; adds hover/click
  *                        listeners and postMessage to the parent on
@@ -28,10 +29,6 @@
  *   annotator.ts       — renderer-side listener; consumes the above
  *                        messages and writes into
  *                        `selectedComponentsPreviewAtom`.
- *   Annotator.tsx      — React component replacing
- *                        `AnnotatorOnlyForPro`; renders an overlay,
- *                        the selection chip list, and a "Done" button
- *                        that closes the picker.
  */
 
 /**

@@ -72,12 +72,16 @@ src/agent/
     search_replace.ts           # drop-in parse/apply for the XML dialect, used by response_processor
 ```
 
-### `src/components/preview_panel/AnnotatorOnlyForPro.tsx`
+### `src/components/preview_panel/Annotator.tsx`
 
-The FSL `Annotator` component was removed. `AnnotatorOnlyForPro` was
-retained but rewritten as a "coming soon" placeholder that no longer
-links to `dyad.sh/pro`. A clean-room screenshot annotator will replace it
-in a later phase.
+The FSL `Annotator` component was removed. Its v1 replacement is a
+clean-room screenshot annotator: captures the preview iframe via the
+existing `dyad-take-screenshot` postMessage, shows the resulting PNG,
+and offers an "Attach to chat" button that hands the PNG to the
+chat-attachments pipeline (`useAttachments.addAttachments`). Drawing
+and pin-marker tools are deliberately deferred — the public contract
+(`onAttach: (file: File) => void`) lets us compose those later without
+re-wiring the preview.
 
 ## Migration status
 
@@ -160,14 +164,19 @@ Done:
       `plan_handlers.ts` now logs + ignores any stale questionnaire
       response instead of crashing.
 - [x] Lay down `src/agent/visual/index.ts` as the clean-room starting
-      point for the DOM annotator: defines the iframe ↔ renderer
-      postMessage protocol (`dyad-visual:ready`,
-      `dyad-visual:element-selected`, `dyad-visual:enter-select-mode`,
-      `dyad-visual:highlight`) and points at the follow-up files
-      needed for a working picker (`iframe_client.ts`, `annotator.ts`,
-      `Annotator.tsx`). Theme picker is already Apache-2.0
-      (`src/shared/themes.ts` + `AuxiliaryActionsMenu.tsx`) and needed
-      no re-implementation.
+      point for future DOM-level selection overlays: defines the
+      iframe ↔ renderer postMessage protocol (`dyad-visual:ready`,
+      `:element-selected`, `:enter-select-mode`, `:highlight`). Theme
+      picker is already Apache-2.0 (`src/shared/themes.ts` +
+      `AuxiliaryActionsMenu.tsx`) and needed no re-implementation.
+      Click-to-select for in-source editing already works today via
+      `VisualEditingToolbar` + `@dyad-sh/react-vite-component-tagger`.
+- [x] Replace `AnnotatorOnlyForPro` with a functional screenshot
+      annotator at `src/components/preview_panel/Annotator.tsx`. v1
+      shows the captured PNG and attaches it to the chat-input via
+      `useAttachments.addAttachments`; drawing / pin-marker tools are
+      a follow-up that can land without changing the Annotator's
+      public contract.
 - [x] Ship `scripts/rebrand.mjs` so a rebrand lands in one command
       once a new product name is picked. The script updates
       `package.json`, `forge.config.ts`, and the hard-coded
@@ -178,11 +187,13 @@ Done:
 
 Pending (tracked for follow-up):
 
-- [ ] Implement the DOM annotator on top of the `src/agent/visual/`
-      protocol skeleton: add `iframe_client.ts` (hover / click
-      capture inside the preview), `annotator.ts` (renderer-side
-      message listener writing into `selectedComponentsPreviewAtom`),
-      and an `Annotator.tsx` to replace `AnnotatorOnlyForPro`.
+- [ ] Grow the screenshot `Annotator.tsx` with drawing / pin-marker
+      tools (v1 only attaches the raw PNG). And, optionally, a
+      richer DOM-level selection overlay on top of the
+      `src/agent/visual/` protocol — click-to-select for in-source
+      editing already works via the existing VisualEditingToolbar, so
+      this is only needed if we want overlay-level richness beyond
+      what the toolbar offers.
 - [ ] Build a real plan-mode questionnaire against the new agent:
       either a tool that emits questions into the chat, or a small
       planner loop that asks and then plans.

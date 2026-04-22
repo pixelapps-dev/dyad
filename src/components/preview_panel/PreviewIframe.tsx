@@ -74,7 +74,7 @@ import { normalizePath } from "../../../shared/normalizePath";
 import { showError } from "@/lib/toast";
 import type { DeviceMode } from "@/lib/schemas";
 import { queryKeys } from "@/lib/queryKeys";
-import { AnnotatorOnlyForPro } from "./AnnotatorOnlyForPro";
+import { Annotator } from "./Annotator";
 import { useAttachments } from "@/hooks/useAttachments";
 import { useUserBudgetInfo } from "@/hooks/useUserBudgetInfo";
 import { VisualEditingToolbar } from "./VisualEditingToolbar";
@@ -1563,15 +1563,11 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
                     : { width: `${deviceWidthConfig[deviceMode]}px` }
                 }
               >
-                {/* TODO(fork): The FSL-licensed Annotator was removed with
-                    the src/pro/ carve-out. The placeholder below will be
-                    replaced with a clean-room screenshot annotator. */}
-                <AnnotatorOnlyForPro
+                <Annotator
+                  screenshotDataUrl={screenshotDataUrl}
                   onGoBack={() => setAnnotatorMode(false)}
+                  onAttach={(file) => addAttachments([file], "chat-context")}
                 />
-                {/* Retain references so type-check does not complain about
-                    locals that will be used once the annotator returns. */}
-                {void addAttachments}
               </div>
             ) : (
               <>
