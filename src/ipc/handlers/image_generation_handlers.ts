@@ -79,7 +79,7 @@ export function registerImageGenerationHandlers() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${apiKey}`,
-            "X-Dyad-Request-Id": requestId,
+            "X-Pagemate-Request-Id": requestId,
           },
           body: JSON.stringify({
             prompt: fullPrompt,

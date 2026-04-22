@@ -55,7 +55,7 @@ export function DyadProSuccessDialog({
               <div>
                 <p className="font-medium">Agent mode</p>
                 <p className="text-sm text-muted-foreground">
-                  Dyad can work on bigger tasks and debug issues
+                  Pagemate can work on bigger tasks and debug issues
                 </p>
               </div>
             </div>

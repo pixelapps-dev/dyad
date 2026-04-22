@@ -198,7 +198,7 @@ export function ModelPicker() {
                 className="cursor-pointer w-full bg-indigo-600 hover:bg-indigo-700 text-white hover:text-white border-indigo-600"
                 onClick={() => {
                   ipc.system.openExternalUrl(
-                    "https://academy.dyad.sh/subscription",
+                    "https://academy.pagemate.dev/subscription",
                   );
                   setOpen(false);
                 }}
@@ -302,7 +302,7 @@ export function ModelPicker() {
                 const provider = providers?.find((p) => p.id === providerId);
                 const providerDisplayName =
                   provider?.id === "auto"
-                    ? "Dyad Turbo"
+                    ? "Pagemate Turbo"
                     : (provider?.name ?? providerId);
                 return (
                   <DropdownMenuSub key={providerId}>

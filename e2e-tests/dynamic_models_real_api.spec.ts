@@ -4,7 +4,7 @@ import { testWithConfig, Timeout } from "./helpers/test_helper";
 const testWithRealCatalog = testWithConfig({
   preLaunchHook: async () => {
     process.env.DYAD_LANGUAGE_MODEL_CATALOG_URL =
-      "https://api.dyad.sh/v1/language-model-catalog";
+      "https://api.pagemate.dev/v1/language-model-catalog";
   },
   postLaunchHook: async () => {
     delete process.env.DYAD_LANGUAGE_MODEL_CATALOG_URL;
@@ -12,7 +12,7 @@ const testWithRealCatalog = testWithConfig({
 });
 
 testWithRealCatalog(
-  "dynamic models - loads real catalog from api.dyad.sh",
+  "dynamic models - loads real catalog from api.pagemate.dev",
   async ({ po }) => {
     await po.setUp();
 

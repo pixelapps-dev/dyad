@@ -434,7 +434,7 @@ export function registerNeonHandlers() {
     }
   });
 
-  // Link an existing Neon project to a Dyad app
+  // Link an existing Neon project to a Pagemate app
   createTypedHandler(neonContracts.setAppProject, async (_, params) => {
     const { appId, projectId } = params;
     logger.info(`Setting Neon project ${projectId} for app ${appId}`);
@@ -562,7 +562,7 @@ export function registerNeonHandlers() {
     }
   });
 
-  // Unlink a Neon project from a Dyad app
+  // Unlink a Neon project from a Pagemate app
   createTypedHandler(neonContracts.unsetAppProject, async (_, params) => {
     const { appId } = params;
     logger.info(`Unsetting Neon project for app ${appId}`);
@@ -756,7 +756,7 @@ export function registerNeonHandlers() {
     // Simulate the deep link event
     event.sender.send("deep-link-received", {
       type: "neon-oauth-return",
-      url: "https://oauth.dyad.sh/api/integrations/neon/login",
+      url: "https://oauth.pagemate.dev/api/integrations/neon/login",
     });
     logger.info("Sent fake neon deep-link-received event during testing.");
   });

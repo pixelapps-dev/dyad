@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Rebrand the fork from "Dyad" to a new product name in one pass.
+ * Rebrand the fork from "Pagemate" to a new product name in one pass.
  *
  * Usage:
  *   node scripts/rebrand.mjs \
@@ -108,10 +108,10 @@ const edits = [
   {
     file: "forge.config.ts",
     replacements: [
-      [`name: "Dyad",`, `name: "${name}",`],
+      [`name: "Pagemate",`, `name: "${name}",`],
       [`schemes: ["dyad"],`, `schemes: ["${protocol}"],`],
       [
-        `"https://raw.githubusercontent.com/dyad-sh/dyad/main/assets/icon/logo.ico"`,
+        `"https://raw.githubusercontent.com/pixelapps-dev/dyad/main/assets/icon/logo.ico"`,
         `"https://raw.githubusercontent.com/${githubSlug}/main/assets/icon/logo.ico"`,
       ],
       // Publisher block: owner + name pair on consecutive lines.
@@ -125,17 +125,17 @@ const edits = [
     file: "src/main.ts",
     replacements: [
       [
-        "`https://api.dyad.sh/v1/update/${postfix}`",
+        "`https://api.pagemate.dev/v1/update/${postfix}`",
         "`https://" + apiHost + "/v1/update/${postfix}`",
       ],
-      [`repo: "dyad-sh/dyad",`, `repo: "${githubSlug}",`],
+      [`repo: "pixelapps-dev/dyad",`, `repo: "${githubSlug}",`],
     ],
   },
   {
     file: "src/ipc/shared/remote_desktop_config.ts",
     replacements: [
       [
-        '"https://api.dyad.sh/v1/desktop-config"',
+        '"https://api.pagemate.dev/v1/desktop-config"',
         `"https://${apiHost}/v1/desktop-config"`,
       ],
     ],
@@ -144,7 +144,7 @@ const edits = [
     file: "src/ipc/shared/remote_language_model_catalog.ts",
     replacements: [
       [
-        '"https://api.dyad.sh/v1/language-model-catalog"',
+        '"https://api.pagemate.dev/v1/language-model-catalog"',
         `"https://${apiHost}/v1/language-model-catalog"`,
       ],
     ],
@@ -152,16 +152,16 @@ const edits = [
   {
     file: "src/ipc/handlers/free_agent_quota_handlers.ts",
     replacements: [
-      ['"https://api.dyad.sh/health"', `"https://${apiHost}/health"`],
-      ["Uses the HTTP Date header from api.dyad.sh.", `Uses the HTTP Date header from ${apiHost}.`],
+      ['"https://api.pagemate.dev/health"', `"https://${apiHost}/health"`],
+      ["Uses the HTTP Date header from api.pagemate.dev.", `Uses the HTTP Date header from ${apiHost}.`],
     ],
   },
   {
     file: "src/ipc/handlers/pro_handlers.ts",
     replacements: [
-      ['"https://api.dyad.sh/v1/user/info"', `"https://${apiHost}/v1/user/info"`],
+      ['"https://api.pagemate.dev/v1/user/info"', `"https://${apiHost}/v1/user/info"`],
       [
-        '"https://engine.dyad.sh/v1"',
+        '"https://engine.pagemate.dev/v1"',
         `"https://${engineHost}/v1"`,
       ],
     ],
@@ -170,7 +170,7 @@ const edits = [
     file: "src/ipc/utils/get_model_client.ts",
     replacements: [
       [
-        '"https://engine.dyad.sh/v1"',
+        '"https://engine.pagemate.dev/v1"',
         `"https://${engineHost}/v1"`,
       ],
     ],
@@ -179,7 +179,7 @@ const edits = [
     file: "src/ipc/utils/cloud_sandbox_provider.ts",
     replacements: [
       [
-        '"https://engine.dyad.sh/v1"',
+        '"https://engine.pagemate.dev/v1"',
         `"https://${engineHost}/v1"`,
       ],
     ],
@@ -188,7 +188,7 @@ const edits = [
     file: "src/ipc/handlers/image_generation_handlers.ts",
     replacements: [
       [
-        '"https://engine.dyad.sh/v1"',
+        '"https://engine.pagemate.dev/v1"',
         `"https://${engineHost}/v1"`,
       ],
     ],
@@ -197,38 +197,38 @@ const edits = [
     file: "src/ipc/utils/template_utils.ts",
     replacements: [
       [
-        '"https://api.dyad.sh/v1/templates"',
+        '"https://api.pagemate.dev/v1/templates"',
         `"https://${apiHost}/v1/templates"`,
       ],
     ],
   },
   // User-facing product-name strings. Deliberately narrow — only the
-  // obvious "Dyad"-as-product-name references, not the Dyad Pro promo
+  // obvious "Pagemate"-as-product-name references, not the Dyad Pro promo
   // messages (which refer to upstream paid products and should be
-  // removed rather than renamed) or the "Dyad" hosted AI provider
+  // removed rather than renamed) or the "Pagemate" hosted AI provider
   // entry (which still refers to the upstream cloud).
   {
     file: "src/hooks/useEnableNotifications.ts",
-    replacements: [[`new Notification("Dyad"`, `new Notification("${name}"`]],
+    replacements: [[`new Notification("Pagemate"`, `new Notification("${name}"`]],
   },
   {
     file: "src/hooks/usePlanEvents.ts",
     replacements: [
-      [`app?.name ?? "Dyad"`, `app?.name ?? "${name}"`],
+      [`app?.name ?? "Pagemate"`, `app?.name ?? "${name}"`],
     ],
   },
   {
     file: "src/hooks/useStreamChat.ts",
     replacements: [
-      [`app?.name ?? "Dyad"`, `app?.name ?? "${name}"`],
+      [`app?.name ?? "Pagemate"`, `app?.name ?? "${name}"`],
     ],
   },
   {
     file: "src/components/ErrorBoundary.tsx",
     replacements: [
-      [`- Dyad Version: `, `- ${name} Version: `],
+      [`- Pagemate Version: `, `- ${name} Version: `],
       [
-        `"[bug] Error in Dyad application"`,
+        `"[bug] Error in Pagemate application"`,
         `"[bug] Error in ${name} application"`,
       ],
       [
@@ -239,21 +239,21 @@ const edits = [
         `"https://github.com/dyad-sh/dyad/issues/new"`,
         `"https://github.com/${githubSlug}/issues/new"`,
       ],
-      [`re-opening Dyad as a temporary`, `re-opening ${name} as a temporary`],
+      [`re-opening Pagemate as a temporary`, `re-opening ${name} as a temporary`],
     ],
   },
   {
     file: "src/components/HelpDialog.tsx",
     replacements: [
-      [`- Dyad Version: `, `- ${name} Version: `],
-      [`Dyad Version: {debugBundle.system.dyadVersion}`, `${name} Version: {debugBundle.system.dyadVersion}`],
-      [`troubleshoot non-AI issues with Dyad`, `troubleshoot non-AI issues with ${name}`],
+      [`- Pagemate Version: `, `- ${name} Version: `],
+      [`Pagemate Version: {debugBundle.system.dyadVersion}`, `${name} Version: {debugBundle.system.dyadVersion}`],
+      [`troubleshoot non-AI issues with Pagemate`, `troubleshoot non-AI issues with ${name}`],
     ],
   },
   {
     file: "src/components/chat/PromoMessage.tsx",
     replacements: [
-      [`Like Dyad? Star it on `, `Like ${name}? Star it on `],
+      [`Like Pagemate? Star it on `, `Like ${name}? Star it on `],
       [
         `url: "https://github.com/dyad-sh/dyad",`,
         `url: "https://github.com/${githubSlug}",`,

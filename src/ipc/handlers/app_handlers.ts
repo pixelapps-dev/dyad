@@ -107,7 +107,7 @@ function formatCloudSandboxError(error: unknown) {
     case "sandbox_insufficient_credits":
       return "You need at least 1 credit available to start a cloud sandbox.";
     case "sandbox_billing_unavailable":
-      return "Dyad couldn’t verify sandbox billing right now. Please try again.";
+      return "Pagemate couldn’t verify sandbox billing right now. Please try again.";
     case "sandbox_credits_exhausted":
       return "This cloud sandbox stopped because your credits ran out.";
     default:
@@ -115,13 +115,13 @@ function formatCloudSandboxError(error: unknown) {
         return "This cloud sandbox is no longer available.";
       }
       if (error.status === 401 || error.status === 403) {
-        return "Dyad couldn’t authorize the cloud sandbox request. Please try again.";
+        return "Pagemate couldn’t authorize the cloud sandbox request. Please try again.";
       }
       if (error.status === 429) {
-        return "Dyad is rate limiting cloud sandbox requests right now. Please try again.";
+        return "Pagemate is rate limiting cloud sandbox requests right now. Please try again.";
       }
       if (typeof error.status === "number" && error.status >= 500) {
-        return "Dyad’s cloud sandbox service is temporarily unavailable. Please try again.";
+        return "Pagemate’s cloud sandbox service is temporarily unavailable. Please try again.";
       }
       return error.message;
   }
@@ -571,7 +571,7 @@ function listenToProcess({
     // This is a hacky heuristic to pick up when drizzle is asking for user
     // to select from one of a few choices. We automatically pick the first
     // option because it's usually a good default choice. We guard this with
-    // isNeon because: 1) only Neon apps (for the official Dyad templates) should
+    // isNeon because: 1) only Neon apps (for the official Pagemate templates) should
     // get this template and 2) it's safer to do this with Neon apps because
     // their databases have point in time restore built-in.
     if (isNeon && message.includes("created or renamed from another")) {
@@ -1227,7 +1227,7 @@ export function registerAppHandlers() {
     // Create initial commit
     const commitHash = await gitCommit({
       path: fullAppPath,
-      message: "Init Dyad app",
+      message: "Init Pagemate app",
     });
 
     // Update chat with initial commit hash
@@ -1308,7 +1308,7 @@ export function registerAppHandlers() {
       // Create initial commit
       await gitCommit({
         path: newAppPath,
-        message: "Init Dyad app",
+        message: "Init Pagemate app",
       });
     }
 

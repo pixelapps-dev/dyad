@@ -18,7 +18,7 @@
  *      preview iframe that would push `ComponentSelection` objects
  *      into the chat input. Click-to-select for in-source editing
  *      already works via the existing `VisualEditingToolbar` and the
- *      `@dyad-sh/react-vite-component-tagger` Vite plugin; the
+ *      `@pixelapps-dev/react-vite-component-tagger` Vite plugin; the
  *      protocol below exists for a future richer overlay.
  *
  * When implementing the richer overlay, create alongside this file:

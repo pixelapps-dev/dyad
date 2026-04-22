@@ -1,7 +1,7 @@
 {
   "name": "pagemate",
   "version": "0.44.0-beta.1",
-  "description": "B2B website builder on top of the Pagemate agent stack (fork of Dyad, Apache-2.0 core).",
+  "description": "B2B website builder on top of the Pagemate agent stack (fork of Pagemate, Apache-2.0 core).",
   "keywords": [],
   "license": "Apache-2.0",
   "author": {
@@ -62,7 +62,7 @@
     "@babel/parser": "^7.28.5",
     "@base-ui/react": "^1.2.0",
     "@biomejs/biome": "^1.9.4",
-    "@dyad-sh/supabase-management-js": "v1.0.1",
+    "@pixelapps-dev/supabase-management-js": "v1.0.1",
     "@flakiness/playwright": "^1.0.0",
     "@lexical/react": "^0.33.1",
     "@modelcontextprotocol/sdk": "^1.17.5",

@@ -849,7 +849,7 @@ export function ChatInput({ chatId }: { chatId?: number }) {
                     render={
                       <button
                         onClick={() => {
-                          ipc.system.openExternalUrl("https://dyad.sh/pro");
+                          ipc.system.openExternalUrl("https://pagemate.dev/pro");
                         }}
                         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                       />
@@ -947,7 +947,7 @@ export function ChatInput({ chatId }: { chatId?: number }) {
                   render={
                     <button
                       onClick={() =>
-                        ipc.system.openExternalUrl("https://dyad.sh/pro")
+                        ipc.system.openExternalUrl("https://pagemate.dev/pro")
                       }
                       aria-label={t("voiceToTextPro", "Voice to text (Pro)")}
                       className="px-2 py-2 mb-0.5 text-muted-foreground hover:text-primary rounded-lg transition-colors duration-150 cursor-pointer relative"

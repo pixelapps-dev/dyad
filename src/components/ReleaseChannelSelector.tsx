@@ -29,16 +29,16 @@ export function ReleaseChannelSelector() {
         action: {
           label: "Download Stable",
           onClick: () => {
-            ipc.system.openExternalUrl("https://dyad.sh/download");
+            ipc.system.openExternalUrl("https://pagemate.dev/download");
           },
         },
       });
     } else {
       toast("Using Beta release channel", {
         description:
-          "You will need to restart Dyad for your settings to take effect.",
+          "You will need to restart Pagemate for your settings to take effect.",
         action: {
-          label: "Restart Dyad",
+          label: "Restart Pagemate",
           onClick: () => {
             ipc.system.restartDyad();
           },

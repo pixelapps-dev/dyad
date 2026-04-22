@@ -7,7 +7,7 @@ If something is out of date, please suggest a change via a pull request.
 
 Pagemate is an Electron app — a local, open-source B2B website builder
 built on top of a clean-room AI agent stack. It's a fork of
-[Dyad](https://github.com/dyad-sh/dyad) with the Functional-Source-Licensed
+[Pagemate](https://github.com/dyad-sh/dyad) with the Functional-Source-Licensed
 "Pro" carve-out removed; see [FORK.md](../FORK.md) for details.
 
 ## Electron architecture

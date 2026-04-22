@@ -329,10 +329,10 @@ export function SetupBanner() {
                 onClick={handleDyadProSetupClick}
                 tabIndex={isNodeSetupComplete ? 0 : -1}
                 leadingIcon={
-                  <img src={logo} alt="Dyad Logo" className="w-6 h-6 mr-0.5" />
+                  <img src={logo} alt="Pagemate Logo" className="w-6 h-6 mr-0.5" />
                 }
                 title="Start with Dyad Pro free trial"
-                subtitle="Unlock the full power of Dyad"
+                subtitle="Unlock the full power of Pagemate"
                 chip={<>Recommended</>}
               />
               <div className="mt-2 flex gap-2">
@@ -408,7 +408,7 @@ function NodeJsHelpCallout() {
         If you run into issues, read our{" "}
         <a
           onClick={() => {
-            ipc.system.openExternalUrl("https://www.dyad.sh/docs/help/nodejs");
+            ipc.system.openExternalUrl("https://www.pagemate.dev/docs/help/nodejs");
           }}
           className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
         >
@@ -460,7 +460,7 @@ function NodeInstallButton({
     case "finished-checking":
       return (
         <div className="mt-3 text-sm text-red-600 dark:text-red-400">
-          Node.js not detected. Closing and re-opening Dyad usually fixes this.
+          Node.js not detected. Closing and re-opening Pagemate usually fixes this.
         </div>
       );
     default:

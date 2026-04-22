@@ -48,7 +48,7 @@ export const localTemplatesData: Template[] = [
     description: "Uses Neon DB, Payload CMS, Next.js",
     imageUrl:
       "https://github.com/user-attachments/assets/ed86f322-40bf-4fd5-81dc-3b1d8a16e12b",
-    githubUrl: "https://github.com/dyad-sh/portal-mini-store-template",
+    githubUrl: "https://github.com/pixelapps-dev/portal-mini-store-template",
     isOfficial: true,
     isExperimental: true,
     requiresNeon: true,

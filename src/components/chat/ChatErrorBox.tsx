@@ -34,7 +34,7 @@ export function ChatErrorBox({
         {error}
         <span className="ml-1">
           <ExternalLink
-            href="https://dyad.sh/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=free-quota-error"
+            href="https://pagemate.dev/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=free-quota-error"
             variant="primary"
           >
             Access with Dyad Pro
@@ -62,13 +62,13 @@ export function ChatErrorBox({
         {error}
         <div className="mt-2 space-y-2 space-x-2">
           <ExternalLink
-            href="https://dyad.sh/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=rate-limit-error"
+            href="https://pagemate.dev/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=rate-limit-error"
             variant="primary"
           >
             Upgrade to Dyad Pro
           </ExternalLink>
 
-          <ExternalLink href="https://dyad.sh/docs/help/ai-rate-limit">
+          <ExternalLink href="https://pagemate.dev/docs/help/ai-rate-limit">
             Troubleshooting guide
           </ExternalLink>
         </div>
@@ -82,7 +82,7 @@ export function ChatErrorBox({
         <span>
           Looks like you don't have a valid Dyad Pro key.{" "}
           <ExternalLink
-            href="https://dyad.sh/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=invalid-pro-key-error"
+            href="https://pagemate.dev/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=invalid-pro-key-error"
             variant="primary"
           >
             Upgrade to Dyad Pro
@@ -96,9 +96,9 @@ export function ChatErrorBox({
     return (
       <ChatInfoContainer onDismiss={onDismiss}>
         <span>
-          You have used all of your Dyad AI credits this month.{" "}
+          You have used all of your Pagemate AI credits this month.{" "}
           <ExternalLink
-            href="https://academy.dyad.sh/subscription?utm_source=dyad-app&utm_medium=app&utm_campaign=exceeded-budget-error"
+            href="https://academy.pagemate.dev/subscription?utm_source=dyad-app&utm_medium=app&utm_campaign=exceeded-budget-error"
             variant="primary"
           >
             Reload or upgrade your subscription
@@ -125,7 +125,7 @@ export function ChatErrorBox({
         upgrade to Dyad Pro for unlimited access or switch to Build mode.
         <div className="mt-2 space-y-2 space-x-2">
           <ExternalLink
-            href="https://dyad.sh/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=free-agent-quota-exceeded"
+            href="https://pagemate.dev/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=free-agent-quota-exceeded"
             variant="primary"
           >
             Upgrade to Dyad Pro
@@ -143,7 +143,7 @@ export function ChatErrorBox({
           error.includes(AI_STREAMING_ERROR_MESSAGE_PREFIX) &&
           !error.includes("TypeError: terminated") && (
             <ExternalLink
-              href="https://dyad.sh/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=general-error"
+              href="https://pagemate.dev/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=general-error"
               variant="primary"
             >
               Upgrade to Dyad Pro
@@ -163,7 +163,7 @@ export function ChatErrorBox({
             </TooltipContent>
           </Tooltip>
         )}
-        <ExternalLink href="https://www.dyad.sh/docs/faq">
+        <ExternalLink href="https://www.pagemate.dev/docs/faq">
           Read docs
         </ExternalLink>
       </div>

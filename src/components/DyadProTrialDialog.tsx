@@ -14,14 +14,14 @@ export function DyadProTrialDialog({
 }: DyadProTrialDialogProps) {
   const handleStartTrial = () => {
     ipc.system.openExternalUrl(
-      "https://academy.dyad.sh/redirect-to-checkout?trialCode=1PRO30&utm_source=dyad-app&utm_medium=app&utm_campaign=setup-dialog-v2",
+      "https://academy.pagemate.dev/redirect-to-checkout?trialCode=1PRO30&utm_source=dyad-app&utm_medium=app&utm_campaign=setup-dialog-v2",
     );
     onClose();
   };
 
   const handleLearnMore = () => {
     ipc.system.openExternalUrl(
-      "https://www.dyad.sh/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=setup-dialog-v2",
+      "https://www.pagemate.dev/pro?utm_source=dyad-app&utm_medium=app&utm_campaign=setup-dialog-v2",
     );
   };
 

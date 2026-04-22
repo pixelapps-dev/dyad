@@ -1,1 +1,1 @@
-# Welcome to your Dyad app
+# Welcome to your Pagemate app

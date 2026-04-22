@@ -127,7 +127,7 @@ When pushing changes and creating PRs:
 
 1. If the branch already has an associated PR, push to whichever remote the branch is tracking.
 2. If the branch hasn't been pushed before, default to pushing to `origin` (`pixelapps-dev/pagemate`) and open the PR there.
-3. Do not push to the upstream `dyad-sh/dyad` remote.
+3. Do not push to the upstream `pixelapps-dev/dyad` remote.
 
 ### Skipping automated review
 

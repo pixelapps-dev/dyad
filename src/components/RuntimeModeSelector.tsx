@@ -117,7 +117,7 @@ export function RuntimeModeSelector() {
           <button
             type="button"
             className="underline font-medium cursor-pointer text-primary"
-            onClick={() => ipc.system.openExternalUrl("https://dyad.sh/pro#ai")}
+            onClick={() => ipc.system.openExternalUrl("https://pagemate.dev/pro#ai")}
           >
             Upgrade to Pro
           </button>

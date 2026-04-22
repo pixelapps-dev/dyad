@@ -1,7 +1,7 @@
 # Pagemate
 
 Pagemate is a local, open-source B2B website builder built on top of a
-clean-room AI agent stack. It's a fork of [Dyad](https://github.com/dyad-sh/dyad)'s
+clean-room AI agent stack. It's a fork of [Pagemate](https://github.com/dyad-sh/dyad)'s
 Apache-2.0 core with the Functional-Source-Licensed "Pro" carve-out removed and
 rewritten natively against the Vercel AI SDK's tool-calling protocol.
 
@@ -30,6 +30,6 @@ Apache 2.0 — see [LICENSE](./LICENSE) and [NOTICE](./NOTICE).
 
 ## Fork notes
 
-See [FORK.md](./FORK.md) for the relationship to upstream Dyad, what was
+See [FORK.md](./FORK.md) for the relationship to upstream Pagemate, what was
 removed with the FSL carve-out, and the replacement-subsystem tree at
 `src/agent/`.

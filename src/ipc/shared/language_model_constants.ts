@@ -612,7 +612,7 @@ export const CLOUD_PROVIDERS: Record<
     gatewayPrefix: "openrouter/",
   },
   auto: {
-    // The "auto" provider is the upstream Dyad hosted inference service.
+    // The "auto" provider is the upstream Pagemate hosted inference service.
     // Pagemate hasn't stood up an equivalent, so the gateway URL in
     // `get_model_client.ts` (rebranded to engine.pagemate.dev) will
     // return nothing until that infrastructure exists. The display

@@ -1,7 +1,7 @@
 - main:
   - heading "Blank page" [level=1]
-- link "Made with Dyad (EDITED)":
-  - /url: https://www.dyad.sh/
+- link "Made with Pagemate (EDITED)":
+  - /url: https://www.pagemate.dev/
 - alert
 - button "Open Next.js Dev Tools":
   - img

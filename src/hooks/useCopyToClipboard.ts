@@ -50,7 +50,7 @@ export const useCopyToClipboard = () => {
     }
   };
 
-  // Convert Dyad content to clean markdown using the same parsing logic as DyadMarkdownParser
+  // Convert Pagemate content to clean markdown using the same parsing logic as DyadMarkdownParser
   const convertDyadContentToMarkdown = (content: string): string => {
     if (!content) return "";
 

@@ -52,7 +52,7 @@ export function Message({ spans }: MessageConfig) {
   );
 }
 
-// Generic, vendor-neutral tips. The upstream Dyad Pro / dyad.sh promos
+// Generic, vendor-neutral tips. The upstream Dyad Pro / pagemate.dev promos
 // were removed in the Pagemate rebrand because they pointed at paid
 // products and docs that don't exist for this fork.
 

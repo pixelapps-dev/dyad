@@ -190,7 +190,7 @@ export function createDyadEngine(
           headers: {
             ...outgoingHeaders,
             ...(modifiedRequestId && {
-              "X-Dyad-Request-Id": modifiedRequestId,
+              "X-Pagemate-Request-Id": modifiedRequestId,
             }),
           },
           body: JSON.stringify(parsedBody),
@@ -272,7 +272,7 @@ export async function transcribeWithDyadEngine(
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
-      "X-Dyad-Request-Id": requestId,
+      "X-Pagemate-Request-Id": requestId,
       ...options.headers,
     },
     body: formData,
@@ -281,7 +281,7 @@ export async function transcribeWithDyadEngine(
   if (!response.ok) {
     const errorText = await response.text();
     throw new DyadError(
-      `Dyad Engine transcription failed: ${response.status} ${response.statusText} - ${errorText}`,
+      `Pagemate Engine transcription failed: ${response.status} ${response.statusText} - ${errorText}`,
       DyadErrorKind.External,
     );
   }

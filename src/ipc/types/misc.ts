@@ -53,7 +53,7 @@ export const SESSION_DEBUG_SCHEMA_VERSION = 2;
 // -- System info --
 
 const DebugSystemInfoSchema = z.object({
-  /** Dyad application version (from package.json) */
+  /** Pagemate application version (from package.json) */
   dyadVersion: z.string(),
   /** OS platform: "darwin", "win32", "linux" */
   platform: z.string(),

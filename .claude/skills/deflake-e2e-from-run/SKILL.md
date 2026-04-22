@@ -16,12 +16,12 @@ Use this skill when the user points you at a specific failing CI run (e.g. `http
 1. Extract `run_id` from the URL (`/actions/runs/<run_id>` or `/actions/runs/<run_id>/job/<job_id>`).
 2. List artifacts and find the `html-report` (merged across shards):
    ```
-   gh api repos/dyad-sh/dyad/actions/runs/<run_id>/artifacts --jq '.artifacts[] | {name, size_in_bytes}'
+   gh api repos/pixelapps-dev/dyad/actions/runs/<run_id>/artifacts --jq '.artifacts[] | {name, size_in_bytes}'
    ```
-3. Download it into a scratch dir (use `-R dyad-sh/dyad` — `gh run download` does not auto-detect the repo from arbitrary cwd):
+3. Download it into a scratch dir (use `-R pixelapps-dev/dyad` — `gh run download` does not auto-detect the repo from arbitrary cwd):
    ```
    mkdir -p /tmp/pw-report
-   gh run download <run_id> -R dyad-sh/dyad -n html-report -D /tmp/pw-report
+   gh run download <run_id> -R pixelapps-dev/dyad -n html-report -D /tmp/pw-report
    ```
 4. Confirm layout: `index.html`, `results.json`, `data/*.zip` (trace archives), `data/*.png` (screenshots), `data/*.markdown` (error-context files).
 

@@ -66,9 +66,9 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // Use fetched data (or defaults for Dyad)
+  // Use fetched data (or defaults for Pagemate)
   const providerDisplayName = isDyad
-    ? "Dyad"
+    ? "Pagemate"
     : (providerData?.name ?? "Unknown Provider");
   const providerWebsiteUrl = providerData?.websiteUrl;
   const hasFreeTier = isDyad ? false : providerData?.hasFreeTier;
