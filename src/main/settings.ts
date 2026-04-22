@@ -147,6 +147,18 @@ export function readSettings(): UserSettings {
         }
       }
     }
+    if (combinedSettings.imageGeneration) {
+      for (const providerId of ["openai", "stability"] as const) {
+        const provider = combinedSettings.imageGeneration[providerId];
+        if (provider?.apiKey) {
+          const encryptionType = provider.apiKey.encryptionType;
+          provider.apiKey = {
+            value: decrypt(provider.apiKey),
+            encryptionType,
+          };
+        }
+      }
+    }
     if (combinedSettings.githubAccessToken) {
       const encryptionType = combinedSettings.githubAccessToken.encryptionType;
       combinedSettings.githubAccessToken = {
@@ -275,6 +287,14 @@ export function writeSettings(settings: Partial<UserSettings>): void {
     if (newSettings.webSearch) {
       for (const providerId of ["tavily", "firecrawl", "exa"] as const) {
         const provider = newSettings.webSearch[providerId];
+        if (provider?.apiKey) {
+          provider.apiKey = encrypt(provider.apiKey.value);
+        }
+      }
+    }
+    if (newSettings.imageGeneration) {
+      for (const providerId of ["openai", "stability"] as const) {
+        const provider = newSettings.imageGeneration[providerId];
         if (provider?.apiKey) {
           provider.apiKey = encrypt(provider.apiKey.value);
         }

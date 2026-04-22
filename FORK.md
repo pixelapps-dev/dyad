@@ -56,6 +56,7 @@ src/agent/
     web_fetch.ts        # http(s) only; SSRF-safe; 2MB cap; GET/HEAD
     web_crawl.ts        # BFS same-origin crawler; SSRF-safe; per-page 1MB cap
     web_search.ts       # pluggable provider dispatch (Tavily / Firecrawl / Exa)
+    generate_image.ts   # pluggable provider dispatch (OpenAI DALL-E 3 / Stability Stable Image Core)
     # P1 Supabase-backed (only work on apps linked to a Supabase project)
     execute_sql.ts              # runs arbitrary SQL via Supabase Management API
     get_database_table_schema.ts # inspects tables/columns/policies/triggers/functions
@@ -130,6 +131,16 @@ Done:
       picker. Keys round-trip through `writeSettings()` /
       `readSettings()` with `safeStorage` encryption like every other
       stored secret.
+- [x] Add `generate_image` tool: pluggable provider dispatch
+      (OpenAI DALL-E 3 / Stability Stable Image Core). The tool
+      writes the generated PNG into the app workspace at a caller-
+      supplied `outputPath` (sandboxed via `safeResolve`, 20MB cap),
+      and a parallel Settings pane
+      (`src/components/ImageGenerationSettings.tsx`) lets users
+      paste keys under `settings.imageGeneration.{openai,stability}.apiKey`.
+      Unlike `web_search`, this tool is not in the read-only
+      allow-list — it mutates the workspace, so ask / plan mode
+      can't invoke it.
 - [x] Rewire all nine production imports that used to point into
       `src/pro/`:
       - `src/ipc/ipc_host.ts` (three handler registrations deleted)
@@ -144,9 +155,6 @@ Done:
 
 Pending (tracked for follow-up):
 
-- [ ] Add the remaining P1 tool to `src/agent/tools/`: `generate_image`.
-      It would currently need to point at the upstream `engine.dyad.sh`
-      host, so it's deferred until the rebrand lands.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent

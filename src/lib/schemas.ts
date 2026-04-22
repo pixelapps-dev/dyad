@@ -229,6 +229,29 @@ export const WebSearchSettingsSchema = z.object({
 });
 export type WebSearchSettings = z.infer<typeof WebSearchSettingsSchema>;
 
+/**
+ * Supported image-generation providers for the `generate_image` agent
+ * tool. Each provider has its own API key; selection works the same
+ * way as `webSearch` — explicit input override first, then
+ * `defaultProvider`, then fall through whichever provider has a key.
+ */
+export const ImageGenerationProviderSchema = z.enum([
+  "openai",
+  "stability",
+]);
+export type ImageGenerationProvider = z.infer<
+  typeof ImageGenerationProviderSchema
+>;
+
+export const ImageGenerationSettingsSchema = z.object({
+  defaultProvider: ImageGenerationProviderSchema.optional(),
+  openai: z.object({ apiKey: SecretSchema.optional() }).optional(),
+  stability: z.object({ apiKey: SecretSchema.optional() }).optional(),
+});
+export type ImageGenerationSettings = z.infer<
+  typeof ImageGenerationSettingsSchema
+>;
+
 export const ExperimentsSchema = z.object({
   // Deprecated
   enableLocalAgent: z.boolean().describe("DEPRECATED").optional(),
@@ -329,6 +352,7 @@ const BaseUserSettingsFields = {
   supabase: SupabaseSchema.optional(),
   neon: NeonSchema.optional(),
   webSearch: WebSearchSettingsSchema.optional(),
+  imageGeneration: ImageGenerationSettingsSchema.optional(),
   autoApproveChanges: z.boolean().optional(),
   telemetryConsent: z.enum(["opted_in", "opted_out", "unset"]).optional(),
   telemetryUserId: z.string().optional(),
