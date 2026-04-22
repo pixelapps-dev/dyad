@@ -580,8 +580,8 @@
     if (e.data.type === "dyad-pro-mode") {
       isProMode = e.data.enabled;
     }
-    if (e.data.type === "activate-dyad-component-selector") activate();
-    if (e.data.type === "deactivate-dyad-component-selector") deactivate();
+    if (e.data.type === "activate-pagemate-component-selector") activate();
+    if (e.data.type === "deactivate-pagemate-component-selector") deactivate();
     if (e.data.type === "activate-dyad-visual-editing") {
       activate();
     }
@@ -665,7 +665,7 @@
 
         window.parent.postMessage(
           {
-            type: "dyad-component-selector-initialized",
+            type: "pagemate-component-selector-initialized",
           },
           "*",
         );

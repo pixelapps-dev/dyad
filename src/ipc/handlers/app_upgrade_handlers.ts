@@ -67,7 +67,12 @@ function isComponentTaggerUpgradeNeeded(appPath: string): boolean {
 
   try {
     const viteConfigContent = fs.readFileSync(viteConfigPath, "utf-8");
-    return !viteConfigContent.includes("@dyad-sh/react-vite-component-tagger");
+    // Accept either the upstream @dyad-sh package (for apps generated
+    // before the Pagemate fork) or the renamed @pagemate package.
+    const hasTagger =
+      viteConfigContent.includes("@pagemate/react-vite-component-tagger") ||
+      viteConfigContent.includes("@dyad-sh/react-vite-component-tagger");
+    return !hasTagger;
   } catch (e) {
     logger.error("Error reading vite config", e);
     return false;
@@ -115,13 +120,17 @@ async function applyComponentTagger(appPath: string) {
 
   let content = await fs.promises.readFile(viteConfigPath, "utf-8");
 
-  // Add import statement if not present
-  if (
-    !content.includes(
-      "import dyadComponentTagger from '@dyad-sh/react-vite-component-tagger';",
-    )
-  ) {
-    // Add it after the last import statement
+  const TAGGER_IMPORT =
+    "import pagemateComponentTagger from '@pagemate/react-vite-component-tagger';";
+
+  // Add import statement if neither the new nor the legacy import is present.
+  const hasLegacyImport = content.includes(
+    "'@dyad-sh/react-vite-component-tagger'",
+  );
+  const hasNewImport = content.includes(
+    "'@pagemate/react-vite-component-tagger'",
+  );
+  if (!hasLegacyImport && !hasNewImport) {
     const lines = content.split("\n");
     let lastImportIndex = -1;
     for (let i = lines.length - 1; i >= 0; i--) {
@@ -130,20 +139,20 @@ async function applyComponentTagger(appPath: string) {
         break;
       }
     }
-    lines.splice(
-      lastImportIndex + 1,
-      0,
-      "import dyadComponentTagger from '@dyad-sh/react-vite-component-tagger';",
-    );
+    lines.splice(lastImportIndex + 1, 0, TAGGER_IMPORT);
     content = lines.join("\n");
   }
 
-  // Add plugin to plugins array
+  // Add plugin to plugins array. Accept either identifier if the user
+  // already had it from the upstream version.
   if (content.includes("plugins: [")) {
-    if (!content.includes("dyadComponentTagger()")) {
+    const hasPlugin =
+      content.includes("pagemateComponentTagger()") ||
+      content.includes("dyadComponentTagger()");
+    if (!hasPlugin) {
       content = content.replace(
         "plugins: [",
-        "plugins: [dyadComponentTagger(), ",
+        "plugins: [pagemateComponentTagger(), ",
       );
     }
   } else {
@@ -158,7 +167,7 @@ async function applyComponentTagger(appPath: string) {
   await new Promise<void>((resolve, reject) => {
     logger.info("Installing component-tagger dependency");
     const process = spawn(
-      "pnpm add -D @dyad-sh/react-vite-component-tagger || npm install --save-dev --legacy-peer-deps @dyad-sh/react-vite-component-tagger",
+      "pnpm add -D @pagemate/react-vite-component-tagger || npm install --save-dev --legacy-peer-deps @pagemate/react-vite-component-tagger",
       {
         cwd: appPath,
         shell: true,

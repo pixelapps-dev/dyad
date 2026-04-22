@@ -609,7 +609,7 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
         return;
       }
 
-      if (event.data?.type === "dyad-component-selector-initialized") {
+      if (event.data?.type === "pagemate-component-selector-initialized") {
         setIsComponentSelectorInitialized(true);
         iframeRef.current?.contentWindow?.postMessage(
           { type: "dyad-pro-mode", enabled: isProMode },
@@ -730,7 +730,7 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
         return;
       }
 
-      if (event.data?.type === "dyad-screenshot-response") {
+      if (event.data?.type === "pagemate-screenshot-response") {
         if (event.data.success && event.data.dataUrl) {
           setScreenshotDataUrl(event.data.dataUrl);
           setAnnotatorMode(true);
@@ -947,8 +947,8 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
       iframeRef.current.contentWindow.postMessage(
         {
           type: newIsPicking
-            ? "activate-dyad-component-selector"
-            : "deactivate-dyad-component-selector",
+            ? "activate-pagemate-component-selector"
+            : "deactivate-pagemate-component-selector",
         },
         "*",
       );
@@ -964,7 +964,7 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
     if (iframeRef.current?.contentWindow) {
       iframeRef.current.contentWindow.postMessage(
         {
-          type: "dyad-take-screenshot",
+          type: "pagemate-take-screenshot",
         },
         "*",
       );

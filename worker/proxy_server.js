@@ -83,74 +83,74 @@ try {
 }
 
 try {
-  const dyadShimPath = path.join(__dirname, "dyad-shim.js");
-  dyadShimContent = fs.readFileSync(dyadShimPath, "utf-8");
-  parentPort?.postMessage("[proxy-worker] dyad-shim.js loaded.");
+  const pagemateShimPath = path.join(__dirname, "pagemate-shim.js");
+  dyadShimContent = fs.readFileSync(pagemateShimPath, "utf-8");
+  parentPort?.postMessage("[proxy-worker] pagemate-shim.js loaded.");
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad-shim.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate-shim.js: ${error.message}`,
   );
 }
 
 try {
   const dyadComponentSelectorClientPath = path.join(
     __dirname,
-    "dyad-component-selector-client.js",
+    "pagemate-component-selector-client.js",
   );
   dyadComponentSelectorClientContent = fs.readFileSync(
     dyadComponentSelectorClientPath,
     "utf-8",
   );
   parentPort?.postMessage(
-    "[proxy-worker] dyad-component-selector-client.js loaded.",
+    "[proxy-worker] pagemate-component-selector-client.js loaded.",
   );
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad-component-selector-client.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate-component-selector-client.js: ${error.message}`,
   );
 }
 
 try {
   const dyadScreenshotClientPath = path.join(
     __dirname,
-    "dyad-screenshot-client.js",
+    "pagemate-screenshot-client.js",
   );
   dyadScreenshotClientContent = fs.readFileSync(
     dyadScreenshotClientPath,
     "utf-8",
   );
-  parentPort?.postMessage("[proxy-worker] dyad-screenshot-client.js loaded.");
+  parentPort?.postMessage("[proxy-worker] pagemate-screenshot-client.js loaded.");
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad-screenshot-client.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate-screenshot-client.js: ${error.message}`,
   );
 }
 
 try {
   const dyadVisualEditorClientPath = path.join(
     __dirname,
-    "dyad-visual-editor-client.js",
+    "pagemate-visual-editor-client.js",
   );
   dyadVisualEditorClientContent = fs.readFileSync(
     dyadVisualEditorClientPath,
     "utf-8",
   );
   parentPort?.postMessage(
-    "[proxy-worker] dyad-visual-editor-client.js loaded.",
+    "[proxy-worker] pagemate-visual-editor-client.js loaded.",
   );
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad-visual-editor-client.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate-visual-editor-client.js: ${error.message}`,
   );
 }
 
 try {
-  const dyadLogsPath = path.join(__dirname, "dyad_logs.js");
+  const dyadLogsPath = path.join(__dirname, "pagemate_logs.js");
   dyadLogsContent = fs.readFileSync(dyadLogsPath, "utf-8");
-  parentPort?.postMessage("[proxy-worker] dyad_logs.js loaded.");
+  parentPort?.postMessage("[proxy-worker] pagemate_logs.js loaded.");
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad_logs.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate_logs.js: ${error.message}`,
   );
 }
 
@@ -159,22 +159,22 @@ let dyadSwContent = null;
 let dyadSwRegisterContent = null;
 
 try {
-  const dyadSwPath = path.join(__dirname, "dyad-sw.js");
+  const dyadSwPath = path.join(__dirname, "pagemate-sw.js");
   dyadSwContent = fs.readFileSync(dyadSwPath, "utf-8");
-  parentPort?.postMessage("[proxy-worker] dyad-sw.js loaded.");
+  parentPort?.postMessage("[proxy-worker] pagemate-sw.js loaded.");
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad-sw.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate-sw.js: ${error.message}`,
   );
 }
 
 try {
-  const dyadSwRegisterPath = path.join(__dirname, "dyad-sw-register.js");
+  const dyadSwRegisterPath = path.join(__dirname, "pagemate-sw-register.js");
   dyadSwRegisterContent = fs.readFileSync(dyadSwRegisterPath, "utf-8");
-  parentPort?.postMessage("[proxy-worker] dyad-sw-register.js loaded.");
+  parentPort?.postMessage("[proxy-worker] pagemate-sw-register.js loaded.");
 } catch (error) {
   parentPort?.postMessage(
-    `[proxy-worker] Failed to read dyad-sw-register.js: ${error.message}`,
+    `[proxy-worker] Failed to read pagemate-sw-register.js: ${error.message}`,
   );
 }
 
@@ -250,14 +250,14 @@ function injectHTML(buf) {
     scripts.push(`<script>${dyadLogsContent}</script>`);
   } else {
     scripts.push(
-      '<script>console.warn("[proxy-worker] dyad_logs.js was not injected.");</script>',
+      '<script>console.warn("[proxy-worker] pagemate_logs.js was not injected.");</script>',
     );
   }
   if (dyadSwRegisterContent) {
     scripts.push(`<script>${dyadSwRegisterContent}</script>`);
   } else {
     scripts.push(
-      '<script>console.warn("[proxy-worker] dyad-sw-register.js was not injected.");</script>',
+      '<script>console.warn("[proxy-worker] pagemate-sw-register.js was not injected.");</script>',
     );
   }
   const allScripts = scripts.join("\n");
@@ -307,7 +307,7 @@ function buildTargetURL(clientReq) {
 
 const server = http.createServer((clientReq, clientRes) => {
   // Special handling for Service Worker file
-  if (clientReq.url === "/dyad-sw.js") {
+  if (clientReq.url === "/pagemate-sw.js") {
     if (dyadSwContent) {
       clientRes.writeHead(200, {
         "content-type": "application/javascript",

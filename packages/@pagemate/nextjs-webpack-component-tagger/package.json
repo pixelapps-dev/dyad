@@ -1,15 +1,16 @@
 {
-  "name": "@dyad-sh/react-vite-component-tagger",
+  "name": "@pagemate/nextjs-webpack-component-tagger",
   "version": "0.8.0",
-  "description": "A Vite plugin that automatically adds data attributes to your React components.",
+  "description": "A webpack loader that automatically adds data attributes to your React components in Next.js (Pagemate fork of @dyad-sh/nextjs-webpack-component-tagger).",
   "keywords": [
-    "dyad",
+    "pagemate",
+    "nextjs",
     "react",
-    "vite",
-    "vite-plugin"
+    "webpack",
+    "webpack-loader"
   ],
   "license": "Apache-2.0",
-  "author": "Dyad",
+  "author": "Pagemate",
   "files": [
     "dist"
   ],
@@ -33,12 +34,12 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.9",
+    "@types/webpack": "^5.28.5",
     "eslint": "^8.52.0",
     "tsup": "^8.0.2",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.0"
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
-    "vite": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0"
+    "webpack": "^5.0.0"
   }
 }

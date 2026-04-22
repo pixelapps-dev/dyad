@@ -76,7 +76,7 @@ src/agent/
 
 The FSL `Annotator` component was removed. Its v1 replacement is a
 clean-room screenshot annotator: captures the preview iframe via the
-existing `dyad-take-screenshot` postMessage, shows the resulting PNG,
+existing `pagemate-take-screenshot` postMessage, shows the resulting PNG,
 and offers an "Attach to chat" button that hands the PNG to the
 chat-attachments pipeline (`useAttachments.addAttachments`). Drawing
 and pin-marker tools are deliberately deferred — the public contract
