@@ -77,7 +77,7 @@ function formatSettingsLines(settings: UserSettings | null): string {
     `- Selected Model: ${settings.selectedModel?.provider}:${settings.selectedModel?.name}`,
     `- Chat Mode: ${settings.selectedChatMode ?? "default"}`,
     `- Auto Approve Changes: ${settings.autoApproveChanges ?? "n/a"}`,
-    `- Dyad Pro Enabled: ${settings.enableDyadPro ?? "n/a"}`,
+    `- Legacy Dyad Pro flag: ${settings.enableDyadPro ?? "n/a"}`,
     `- Thinking Budget: ${settings.thinkingBudget ?? "n/a"}`,
     `- Runtime Mode: ${settings.runtimeMode2 ?? "n/a"}`,
     `- Release Channel: ${settings.releaseChannel ?? "n/a"}`,
@@ -352,7 +352,7 @@ ${formatLogsSection(debugInfo)}
     setIsUploading(true);
     try {
       const response = await fetch(
-        "https://upload-logs.dyad.sh/generate-upload-url",
+        "https://logs.pagemate.dev/generate-upload-url",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -455,14 +455,14 @@ ${formatLogsSection(debugInfo)}
             onClick={() => setIsHelpBotOpen(true)}
             className="w-full py-6 border-primary/50 shadow-sm shadow-primary/10 transition-all hover:shadow-md hover:shadow-primary/15"
           >
-            <SparklesIcon className="mr-2 h-5 w-5" /> Chat with Dyad help bot
-            (Pro)
+            <SparklesIcon className="mr-2 h-5 w-5" /> Chat with Pagemate help
+            bot (Pro)
           </Button>
         ) : (
           <Button
             variant="outline"
             onClick={() =>
-              ipc.system.openExternalUrl("https://www.dyad.sh/docs")
+              ipc.system.openExternalUrl("https://www.pagemate.dev/docs")
             }
             className="w-full py-6 bg-(--background-lightest)"
           >
@@ -485,9 +485,7 @@ ${formatLogsSection(debugInfo)}
           <div className="border rounded-lg p-4 space-y-3 relative">
             <div className="flex items-center gap-2">
               <MessageSquareIcon className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold">
-                AI / Dyad Pro issues
-              </span>
+              <span className="text-sm font-semibold">AI issues</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Best for AI quality issues. Uploads your chat session and code for

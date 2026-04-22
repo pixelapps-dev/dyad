@@ -612,8 +612,14 @@ export const CLOUD_PROVIDERS: Record<
     gatewayPrefix: "openrouter/",
   },
   auto: {
-    displayName: "Dyad",
-    websiteUrl: "https://academy.dyad.sh/subscription",
+    // The "auto" provider is the upstream Dyad hosted inference service.
+    // Pagemate hasn't stood up an equivalent, so the gateway URL in
+    // `get_model_client.ts` (rebranded to engine.pagemate.dev) will
+    // return nothing until that infrastructure exists. The display
+    // name is kept neutral so the UI doesn't promise a "Pagemate Pro"
+    // that isn't shipped.
+    displayName: "Pagemate (Hosted)",
+    websiteUrl: "https://www.pagemate.dev",
     gatewayPrefix: "dyad/",
   },
   azure: {
