@@ -243,6 +243,34 @@ Done:
       (`src/ipc/shared/language_model_constants.ts` `auto`) to
       "Pagemate (Hosted)" with a comment noting the engine URL
       won't resolve until Pagemate stands up an equivalent.
+- [x] Add the remaining agent-state tools the brief called out:
+      `update_todos`, `write_plan`, `exit_plan`, `set_chat_summary`,
+      plus a `code_search` alias for `grep` and a `read_guide`
+      tool that serves `src/prompts/guides/*.md` on demand.
+      `update_todos` emits to the renderer's existing
+      `agent-tool:todos-update` event so the todo pill above the
+      chat input wires up end-to-end. `src/agent/events.ts` is
+      the broadcast helper tools use to reach the renderer.
+- [x] Phase 5 starter scaffold: `scaffolds/nextjs-marketing/` —
+      Next.js 15 App Router + Tailwind (hero, pricing, about,
+      contact form → `/api/lead`, 404). `createFromTemplate`
+      learns about `BUNDLED_SCAFFOLD_TEMPLATE_IDS` so bundled
+      scaffolds get copied from disk instead of cloned.
+      `forge.config.ts` packs `scaffolds/` into the built app.
+- [x] Add `@testing-library/dom` as an explicit dev dep. The
+      `@testing-library/react@16` peer dep was implicit under
+      pnpm's default resolver but failed under other package
+      managers, leaving `waitFor` and friends unresolvable.
+- [x] Full build-side verification in this branch's sandbox:
+        - `npx tsc -p tsconfig.app.json --noEmit` exits 0
+          (zero errors across the entire codebase).
+        - `npx vitest run` runs 632 tests — 631 pass. The single
+          failure is `gitListFilesNative`, which only fails when
+          `dugite`'s bundled Git binary is absent (sandbox-only,
+          because `@vscode/ripgrep` and `dugite` postinstall
+          scripts pull binaries from github.com releases and the
+          sandbox network is throttled). Not a fork regression.
+        - `npx oxlint` reports 0 warnings, 0 errors.
 
 Pending (genuinely blocked on external input or future product work):
 
@@ -255,7 +283,9 @@ Pending (genuinely blocked on external input or future product work):
       (plus all the other identity flags) to patch the key in
       `src/renderer.tsx`.
 - [ ] Regenerate `pnpm-lock.yaml` by running `pnpm install`
-      (requires network + a pnpm toolchain).
+      (requires Node >= 24 and network access to
+      github.com/releases for the `@vscode/ripgrep` and `dugite`
+      postinstall binaries).
 - [ ] Grow `Annotator.tsx` with drawing / pin-marker tools on top
       of the existing attach-screenshot v1. Optional: build a
       richer DOM-level selection overlay on top of the
