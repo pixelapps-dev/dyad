@@ -193,48 +193,90 @@ Done:
       / `engine.pagemate.dev` hosts and `pagemate://` protocol
       scheme. 17 files touched; NOTICE/LICENSE keep the upstream
       "Dyad" attribution per Apache-2.0 §4(d).
+- [x] Phase 3 branding completion: license `MIT` → `Apache-2.0`
+      in `package.json`, author field reset to Pagemate,
+      `MakerDeb` mimeType flipped to `x-scheme-handler/pagemate`,
+      protocol registration in `src/main.ts` switched to
+      `pagemate://`, README / SECURITY / CONTRIBUTING / AGENTS /
+      docs rewritten, i18n locales retranslated (67 strings
+      across en/pt-BR/zh-CN via `scripts/rebrand_i18n.mjs`),
+      system-prompt `<role>` line identifies Pagemate as a B2B
+      website builder.
+- [x] Phase 3b: rename `@dyad-sh/react-vite-component-tagger` and
+      `@dyad-sh/nextjs-webpack-component-tagger` into the
+      `@pagemate` npm scope. Scaffold `vite.config.ts` and
+      `package.json` updated; the upgrade handler still accepts
+      the `@dyad-sh/...` name for apps generated before the fork
+      so existing workspaces don't re-upgrade.
+- [x] Phase 3b: rename all `worker/dyad-*.js` protocol clients
+      (shim, service worker, component-selector, screenshot,
+      visual-editor, logs) plus every `dyad-*` postMessage
+      identifier on both sides of the preview-iframe
+      connection. Driven by `scripts/rebrand_workers.mjs`.
+- [x] Phase 3c/3d: neutralise the `made-with-dyad` brand-leak
+      injection (component now returns `null`; file kept so e2e
+      fixtures resolve), swap `assets/logo.svg` for a neutral "Pm"
+      placeholder wordmark, and document the icon-regeneration
+      steps in `assets/README.md`.
+- [x] Phase 3e/6: drop `cla.yml`, Dyad-Hub-specific issue
+      templates (`add_template.md`, `hub_issue.md`), the
+      privileged-author / self-hosted-runner logic in
+      `.github/workflows/ci.yml`, and the `dyad-sh` owner in
+      `pr-review-alerts.yml`. Bug report template cleaned up.
+- [x] Phase 7: bulk `\bDyad\b` / `\bdyad.sh\b` / `\bdyad-sh/` →
+      Pagemate / pagemate.dev / pixelapps-dev/ sweep across 141
+      files, driven by `scripts/rebrand_sweep.mjs` with a guard
+      list that preserves internal identifiers, React component
+      symbols (DyadCard, DyadMarkdownParser, …), XML dialect
+      tokens, GitHub App secret names, and historical issue
+      links. NOTICE and LICENSE are explicitly skipped so
+      Apache-2.0 §4(d) attribution to Dyad Tech, Inc. survives
+      verbatim.
+- [x] Phase 3c: strip Dyad Pro / dyad.sh promo messages from
+      `PromoMessage.tsx` (TURBO_EDITS, SMART_CONTEXT, REDDIT,
+      BUILD_A_BIBLE, DEBUGGING_TIPS, AI_RULES, ROADMAP removed).
+      Kept the generic, vendor-neutral tips plus the Pagemate
+      GitHub-star link. HelpDialog points at `pagemate.dev/docs`
+      and renames the Dyad help-bot entry / debug labels; the
+      log-upload endpoint moves to `logs.pagemate.dev` (infra TBD).
+- [x] Rename the "Dyad" hosted-AI provider entry
+      (`src/ipc/shared/language_model_constants.ts` `auto`) to
+      "Pagemate (Hosted)" with a comment noting the engine URL
+      won't resolve until Pagemate stands up an equivalent.
 
-Pending (tracked for follow-up):
+Pending (genuinely blocked on external input or future product work):
 
-- [ ] Grow the screenshot `Annotator.tsx` with drawing / pin-marker
-      tools (v1 only attaches the raw PNG). And, optionally, a
+- [ ] Replace `assets/icon/logo.{png,ico,icns}` with
+      Pagemate-branded binaries (needs design). The placeholder
+      `assets/logo.svg` is in place; the binary trio is the
+      trademark-sensitive one.
+- [ ] Mint a new PostHog project and run
+      `node scripts/rebrand.mjs --posthog-key phc_... --apply`
+      (plus all the other identity flags) to patch the key in
+      `src/renderer.tsx`.
+- [ ] Regenerate `pnpm-lock.yaml` by running `pnpm install`
+      (requires network + a pnpm toolchain).
+- [ ] Grow `Annotator.tsx` with drawing / pin-marker tools on top
+      of the existing attach-screenshot v1. Optional: build a
       richer DOM-level selection overlay on top of the
-      `src/agent/visual/` protocol — click-to-select for in-source
-      editing already works via the existing VisualEditingToolbar, so
-      this is only needed if we want overlay-level richness beyond
-      what the toolbar offers.
-- [ ] Build a real plan-mode questionnaire against the new agent:
-      either a tool that emits questions into the chat, or a small
-      planner loop that asks and then plans.
-- [ ] Sunset the upstream XML dialect (`<dyad-write>`, `<dyad-rename>`,
-      `<dyad-delete>`, `<dyad-add-dependency>`, `<dyad-search-replace>`,
-      `cleanFullResponse`, `hasUnclosedDyadWrite`, `removeDyadTags`).
-      The dialect is still live in `response_processor.ts` and in the
-      upstream build-mode streaming path, and every test under
+      `src/agent/visual/` postMessage protocol — click-to-select
+      for in-source editing already works via the existing
+      `VisualEditingToolbar`, so this is only needed if we want
+      overlay richness beyond what the toolbar offers.
+- [ ] Build a real plan-mode questionnaire against the new agent
+      (either a tool that emits questions into the chat, or a
+      small planner loop).
+- [ ] Sunset the upstream XML dialect once `response_processor.ts`
+      itself migrates to the new agent path. Tracked separately
+      because every test under
       `src/__tests__/chat_stream_handlers.test.ts` +
-      `src/ipc/processors/response_processor.test.ts` covers
-      production code. Ripping the tests out now would drop real
-      coverage; they can only go once `response_processor.ts` itself
-      migrates to the new agent path.
-- [ ] Replace `assets/icon/*` with Pagemate-branded icon files
-      (PNG / ICO / ICNS for the installer and app window).
-- [ ] Mint a new PostHog project and update `src/renderer.tsx` with
-      the new project key. Re-run the rebrand script with
-      `--posthog-key phc_...` to do it in-place.
-- [ ] Strip or rename Dyad Pro / dyad.sh promotional links (promo
-      messages in `src/components/chat/PromoMessage.tsx`,
-      `academy.dyad.sh` and `dyad.sh/docs` references in
-      `HelpDialog.tsx`). These point at upstream paid / hosted
-      services that Pagemate doesn't offer.
-- [ ] Decide whether to keep the upstream "Dyad" hosted-AI provider
-      entry (`src/ipc/shared/language_model_constants.ts` `auto`
-      provider) or drop it; the label is still "Dyad" because it's
-      legitimately the Dyad cloud's endpoint.
+      `src/ipc/processors/response_processor.test.ts` covers live
+      production code; removing them before the processor
+      migration drops real coverage.
 - [ ] Optional: mass-rename internal `dyad*` identifiers
-      (`dyadRequestId`, `DYAD_ENGINE_URL`, `enableDyadPro`, …) in a
-      follow-up commit. Keep it separate from the rebrand so the
-      diff stays reviewable.
-- [ ] Fresh pnpm lockfile once renames settle (`pnpm install`).
+      (`dyadRequestId`, `DYAD_ENGINE_URL`, `enableDyadPro`,
+      `DyadCard`, `DyadMarkdownParser`, …) in a separate,
+      reviewable commit.
 
 ## Why native tool-calling
 
