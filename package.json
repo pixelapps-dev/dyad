@@ -16,6 +16,7 @@
   "scripts": {
     "bump": "node scripts/bump-version.mjs",
     "clean": "rimraf out scaffold/node_modules",
+    "postinstall": "node scripts/postinstall.mjs",
     "start": "electron-forge start",
     "dev": "cross-env NODE_ENV=development npm start",
     "dev:engine": "cross-env DYAD_ENGINE_URL=http://localhost:8080/v1 npm start",
