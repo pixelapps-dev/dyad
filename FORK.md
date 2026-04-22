@@ -65,9 +65,11 @@ src/agent/
     local_agent_stream.ts       # handleLocalAgentStream() over runAgent(); emits the legacy
                                 # chat:response:chunk / :end / :error IPC events and the new
                                 # agent-tool:call-start / agent-tool:call-end events
+  visual/
+    index.ts                    # iframe ↔ renderer postMessage protocol for the DOM annotator
+                                # (types only; clean-room pick-up for future Annotator work)
   compat/
     search_replace.ts           # drop-in parse/apply for the XML dialect, used by response_processor
-    questionnaire_stub.ts       # throws; points callers at the new agent
 ```
 
 ### `src/components/preview_panel/AnnotatorOnlyForPro.tsx`
@@ -152,13 +154,38 @@ Done:
       - `src/main.ts` (dropped `cleanupOldAiMessagesJson`)
       - `src/prompts/system_prompt.ts` (dropped `TURBO_EDITS_V2_SYSTEM_PROMPT`)
       - `src/components/preview_panel/PreviewIframe.tsx` (dropped `Annotator`)
+- [x] Stand down the plan-mode questionnaire stub. No producer in the
+      fork emits questionnaire requests, so the handler's throw was
+      unreachable-by-construction but noisy. The stub file is gone and
+      `plan_handlers.ts` now logs + ignores any stale questionnaire
+      response instead of crashing.
+- [x] Lay down `src/agent/visual/index.ts` as the clean-room starting
+      point for the DOM annotator: defines the iframe ↔ renderer
+      postMessage protocol (`dyad-visual:ready`,
+      `dyad-visual:element-selected`, `dyad-visual:enter-select-mode`,
+      `dyad-visual:highlight`) and points at the follow-up files
+      needed for a working picker (`iframe_client.ts`, `annotator.ts`,
+      `Annotator.tsx`). Theme picker is already Apache-2.0
+      (`src/shared/themes.ts` + `AuxiliaryActionsMenu.tsx`) and needed
+      no re-implementation.
+- [x] Ship `scripts/rebrand.mjs` so a rebrand lands in one command
+      once a new product name is picked. The script updates
+      `package.json`, `forge.config.ts`, and the hard-coded
+      `api.dyad.sh` / `engine.dyad.sh` / `dyad-sh/dyad` references in
+      the IPC utilities. Dry-runs by default; `--apply` writes. Does
+      not touch internal `dyad*` identifiers, issue-link comments, or
+      `<dyad-*>` XML tags.
 
 Pending (tracked for follow-up):
 
-- [ ] Re-implement visual editing (themes picker + DOM annotator) as a
-      clean-room feature in `src/agent/visual/`.
-- [ ] Re-implement the plan-mode questionnaire flow against the new agent
-      in `src/agent/plan/` (current stub throws).
+- [ ] Implement the DOM annotator on top of the `src/agent/visual/`
+      protocol skeleton: add `iframe_client.ts` (hover / click
+      capture inside the preview), `annotator.ts` (renderer-side
+      message listener writing into `selectedComponentsPreviewAtom`),
+      and an `Annotator.tsx` to replace `AnnotatorOnlyForPro`.
+- [ ] Build a real plan-mode questionnaire against the new agent:
+      either a tool that emits questions into the chat, or a small
+      planner loop that asks and then plans.
 - [ ] Sunset the upstream XML dialect (`<dyad-write>`, `<dyad-rename>`,
       `<dyad-delete>`, `<dyad-add-dependency>`, `<dyad-search-replace>`,
       `cleanFullResponse`, `hasUnclosedDyadWrite`, `removeDyadTags`).
@@ -169,10 +196,13 @@ Pending (tracked for follow-up):
       production code. Ripping the tests out now would drop real
       coverage; they can only go once `response_processor.ts` itself
       migrates to the new agent path.
-- [ ] Rebrand: swap product name, icons, protocol handler (`dyad://`),
-      PostHog key, auto-update host (`api.dyad.sh`), engine host
-      (`engine.dyad.sh`), and GitHub publisher (`dyad-sh/dyad`).
-- [ ] Fresh pnpm lockfile once renames settle.
+- [ ] Pick a product name and run `node scripts/rebrand.mjs --name
+      "<NewName>" --github-slug "<org>/<repo>" --api-host "<api>"
+      --engine-host "<engine>" --protocol "<scheme>" --apply`. After
+      the script: replace `assets/icon/*`, update the PostHog project
+      key, and decide whether to mass-rename internal `dyad*`
+      identifiers in a follow-up commit.
+- [ ] Fresh pnpm lockfile once renames settle (`pnpm install`).
 
 ## Why native tool-calling
 

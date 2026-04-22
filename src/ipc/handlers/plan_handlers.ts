@@ -7,7 +7,6 @@ import { getDyadAppPath } from "../../paths/paths";
 import log from "electron-log";
 import { createTypedHandler } from "./base";
 import { planContracts } from "../types/plan";
-import { resolveQuestionnaireResponse } from "../../agent/compat/questionnaire_stub";
 import {
   slugify,
   buildFrontmatter,
@@ -162,7 +161,16 @@ export function registerPlanHandlers() {
   createTypedHandler(
     planContracts.respondToQuestionnaire,
     async (_, params) => {
-      resolveQuestionnaireResponse(params.requestId, params.answers);
+      // The upstream planning questionnaire (FSL-licensed, removed in the
+      // fork) produced the questions this handler was meant to resolve.
+      // Nothing in the fork emits those questions today, so the handler
+      // only runs if a stale questionnaire survives across an upgrade —
+      // in which case we drop the answers silently rather than throwing.
+      logger.warn(
+        "Plan questionnaire response ignored (no producer in fork): requestId=%s answers=%d",
+        params.requestId,
+        params.answers?.length ?? 0,
+      );
     },
   );
 }
