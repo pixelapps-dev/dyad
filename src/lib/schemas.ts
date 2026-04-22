@@ -208,6 +208,27 @@ export const NeonSchema = z.object({
 });
 export type Neon = z.infer<typeof NeonSchema>;
 
+/**
+ * Supported web-search providers for the `web_search` agent tool.
+ * Each provider has its own API key; the `defaultProvider` field below
+ * picks which one the tool dispatches to when the caller doesn't
+ * specify.
+ */
+export const WebSearchProviderSchema = z.enum([
+  "tavily",
+  "firecrawl",
+  "exa",
+]);
+export type WebSearchProvider = z.infer<typeof WebSearchProviderSchema>;
+
+export const WebSearchSettingsSchema = z.object({
+  defaultProvider: WebSearchProviderSchema.optional(),
+  tavily: z.object({ apiKey: SecretSchema.optional() }).optional(),
+  firecrawl: z.object({ apiKey: SecretSchema.optional() }).optional(),
+  exa: z.object({ apiKey: SecretSchema.optional() }).optional(),
+});
+export type WebSearchSettings = z.infer<typeof WebSearchSettingsSchema>;
+
 export const ExperimentsSchema = z.object({
   // Deprecated
   enableLocalAgent: z.boolean().describe("DEPRECATED").optional(),
@@ -307,6 +328,7 @@ const BaseUserSettingsFields = {
   vercelAccessToken: SecretSchema.optional(),
   supabase: SupabaseSchema.optional(),
   neon: NeonSchema.optional(),
+  webSearch: WebSearchSettingsSchema.optional(),
   autoApproveChanges: z.boolean().optional(),
   telemetryConsent: z.enum(["opted_in", "opted_out", "unset"]).optional(),
   telemetryUserId: z.string().optional(),

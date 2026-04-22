@@ -55,6 +55,7 @@ src/agent/
     add_dependency.ts   # auto-detects pnpm/yarn/npm; strict package-spec whitelist
     web_fetch.ts        # http(s) only; SSRF-safe; 2MB cap; GET/HEAD
     web_crawl.ts        # BFS same-origin crawler; SSRF-safe; per-page 1MB cap
+    web_search.ts       # pluggable provider dispatch (Tavily / Firecrawl / Exa)
     # P1 Supabase-backed (only work on apps linked to a Supabase project)
     execute_sql.ts              # runs arbitrary SQL via Supabase Management API
     get_database_table_schema.ts # inspects tables/columns/policies/triggers/functions
@@ -112,6 +113,17 @@ Done:
       primitives — running / ok / error states each get a distinct
       accent, and each card expands to show the input and output (or
       error) previews.
+- [x] Add `web_crawl` tool: BFS same-origin crawler, 1MB per-page
+      cap, 50-page / 5-depth / 300s hard ceilings, re-validates every
+      dequeued URL via `src/agent/url_safety.ts` so redirects can't
+      drag it into a blocked host.
+- [x] Add `web_search` tool with a pluggable provider abstraction
+      (Tavily / Firecrawl / Exa). API keys live under
+      `settings.webSearch.{tavily,firecrawl,exa}.apiKey` and the caller
+      can override the provider via an input arg; otherwise the tool
+      uses `settings.webSearch.defaultProvider` or falls through the
+      configured providers in priority order. Results are normalized
+      across providers to `{title, url, snippet, score?, publishedDate?}`.
 - [x] Rewire all nine production imports that used to point into
       `src/pro/`:
       - `src/ipc/ipc_host.ts` (three handler registrations deleted)
@@ -126,11 +138,12 @@ Done:
 
 Pending (tracked for follow-up):
 
-- [ ] Add the remaining P1 tools to `src/agent/tools/` (`web_search`,
-      `generate_image`). `web_search` needs a provider decision (Tavily /
-      Brave / SerpAPI) and a new settings slot for the API key.
-      `generate_image` would currently need to point at the upstream
-      `engine.dyad.sh` host, so it's deferred until the rebrand lands.
+- [ ] Add the remaining P1 tool to `src/agent/tools/`: `generate_image`.
+      It would currently need to point at the upstream `engine.dyad.sh`
+      host, so it's deferred until the rebrand lands.
+- [ ] Add a settings pane UI for `settings.webSearch` so users can
+      paste Tavily / Firecrawl / Exa API keys in-app. The schema slot
+      is wired; only the React form is missing.
 - [ ] Re-implement visual editing (themes picker + DOM annotator) as a
       clean-room feature in `src/agent/visual/`.
 - [ ] Re-implement the plan-mode questionnaire flow against the new agent

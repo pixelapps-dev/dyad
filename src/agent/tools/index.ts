@@ -12,6 +12,7 @@ import { runTypeChecksTool } from "./run_type_checks";
 import { addDependencyTool } from "./add_dependency";
 import { webFetchTool } from "./web_fetch";
 import { webCrawlTool } from "./web_crawl";
+import { webSearchTool } from "./web_search";
 import { executeSqlTool } from "./execute_sql";
 import { getDatabaseTableSchemaTool } from "./get_database_table_schema";
 import { readLogsTool } from "./read_logs";
@@ -22,8 +23,10 @@ import { readLogsTool } from "./read_logs";
  * P0 filesystem + search tools and most of the P1 tools are wired here.
  * The Supabase-backed tools (execute_sql, get_database_table_schema,
  * read_logs) only succeed on apps linked to a Supabase project; they
- * throw a clear error otherwise. Remaining P1 tools (web_search,
- * generate_image) are still pending — see FORK.md.
+ * throw a clear error otherwise. `web_search` dispatches to whichever
+ * provider (Tavily / Firecrawl / Exa) has an API key configured under
+ * `settings.webSearch`. Remaining P1 tool (generate_image) is still
+ * pending — see FORK.md.
  */
 export function buildAgentTools(ctx: AgentContext): ToolSet {
   return {
@@ -39,6 +42,7 @@ export function buildAgentTools(ctx: AgentContext): ToolSet {
     add_dependency: addDependencyTool(ctx),
     web_fetch: webFetchTool(),
     web_crawl: webCrawlTool(),
+    web_search: webSearchTool(),
     execute_sql: executeSqlTool(ctx),
     get_database_table_schema: getDatabaseTableSchemaTool(ctx),
     read_logs: readLogsTool(ctx),
